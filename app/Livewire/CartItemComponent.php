@@ -45,7 +45,7 @@ class CartItemComponent extends Component
         session()->flash('success', $product->name.' Successfully added to cart');
     }
 
-    public function remove()
+    public function removeFromCart()
     {
         $this->skipRender();
 

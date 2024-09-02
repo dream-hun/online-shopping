@@ -17,7 +17,6 @@
     <section class="py-8 antialiasedmd:py-16">
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
             <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Shopping Cart</h2>
-
             <livewire:shopping-cart-component />
         </div>
     </section>

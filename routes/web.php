@@ -23,7 +23,8 @@ Route::get('/', function () {
 })->name('home');
 Route::get('/shopping-cart', ShoppingCartController::class)->name('cart');
 Route::get('/shop', ShopController::class)->name('shop');
-Route::get('/shop/{product:slug}', ProductShowController::class)->name('product.show');
+Route::get('/shop/{product:slug}', [ProductShowController::class,'index'])->name('product.show');
+Route::post('/cart/add/{id}', [ProductShowController::class, 'addToCart'])->name('addToCart');
 Route::get('/shop/category/{category:slug}', CategoryShowController::class)->name('category.show');
 Route::get('/home', function () {
     if (session('status')) {

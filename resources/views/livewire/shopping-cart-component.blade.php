@@ -1,9 +1,22 @@
 <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
     <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
-        <div class="space-y-6">
-            @foreach ($cart as $cartItem)
-                <livewire:cart-item-component :product="$cartItem->associatedModel" :cart-item="$cartItem" :key="$cartItem->id" />
-            @endforeach
+        <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left font-semibold">Product</th>
+                        <th class="text-left font-semibold">Price</th>
+                        <th class="text-left font-semibold">Quantity</th>
+                        <th class="text-left font-semibold">Total</th>
+                        <th class="text-left font-semibold">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cart as $cartItem)
+                        <livewire:cart-item-component :product="$cartItem->associatedModel" :cart-item="$cartItem" :key="$cartItem->id" />
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
