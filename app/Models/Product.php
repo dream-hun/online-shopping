@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, SoftDeletes;
+    use HasFactory, Sluggable, InteractsWithMedia, SoftDeletes;
 
     public $table = 'products';
 
@@ -76,5 +77,18 @@ class Product extends Model implements HasMedia
     public function formattedPrice(): Money
     {
         return Money::RWF($this->price);
+    }
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }
