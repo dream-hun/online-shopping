@@ -64,7 +64,7 @@
     Dropzone.options.imageDropzone = {
     url: '{{ route('admin.categories.storeMedia') }}',
     maxFilesize: 5, // MB
-    acceptedFiles: '.jpeg,.jpg,.png,.gif',
+    acceptedFiles: '.jpeg,.jpg,.png,.gif,.webp',
     maxFiles: 1,
     addRemoveLinks: true,
     headers: {
