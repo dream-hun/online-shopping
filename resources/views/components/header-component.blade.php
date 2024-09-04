@@ -1,22 +1,22 @@
-<nav x-data="{ mobileMenuOpen: false, currencyDropdownOpen: false }" class="sticky top-0">
-    <div class="bg-green-800 text-white items-center">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-2">
-                <div class="relative flex">
-                    <a href="tel:{{ $setting->mobile_one }}" class="font-normal px-2 flex">{{ $setting->mobile_one}}</a>
-                    <a href="tel:{{ $setting->mobile_two}}" class="font-normal px-2">{{ $setting->mobile_two}}</a>
-                    <a href="tel: {{ $setting->whatsapp}}" class="font-normal px-2">{{ $setting->whatsapp}}</a>
-                    <a href="emailto: {{ $setting->email}}" class="font-normal px-2">{{ $setting->email}}</a>
-                    <a href="emailto: {{ $setting->email_two}}" class="font-normal px-2">{{ $setting->email_two}}</a>
-                    <a href="#" class="text-white font-normal px-2">{{ $setting->address}}</a>  
-                </div>
-                <div class="hidden md:flex space-x-4">
-                    <a href="#">Sign in</a>
-                    <a href="#">Create an account</a>
-                </div>
+<nav x-data="{ mobileMenuOpen: false, currencyDropdownOpen: false }">
+    <div class="hidden sm:block bg-green-800 text-white">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col sm:flex-row justify-between items-center py-2">
+            <div class="flex flex-wrap justify-center sm:justify-start">
+                <a href="tel:{{ $setting->mobile_one }}" class="font-normal px-2 py-1 text-sm">{{ $setting->mobile_one }}</a>
+                <a href="tel:{{ $setting->mobile_two }}" class="font-normal px-2 py-1 text-sm">{{ $setting->mobile_two }}</a>
+                <a href="tel:{{ $setting->whatsapp }}" class="font-normal px-2 py-1 text-sm">{{ $setting->whatsapp }}</a>
+                <a href="mailto:{{ $setting->email }}" class="font-normal px-2 py-1 text-sm">{{ $setting->email }}</a>
+                <a href="mailto:{{ $setting->email_two }}" class="font-normal px-2 py-1 text-sm">{{ $setting->email_two }}</a>
+                <a href="#" class="font-normal px-2 py-1 text-sm">{{ $setting->address }}</a>  
+            </div>
+            <div class="mt-2 sm:mt-0 flex space-x-4">
+                <a href="#" class="text-sm">Sign in</a>
+                <a href="#" class="text-sm">Create an account</a>
             </div>
         </div>
     </div>
+</div>
     <div class="bg-white text-black py-4">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center">

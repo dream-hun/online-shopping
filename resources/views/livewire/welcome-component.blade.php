@@ -27,7 +27,7 @@
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">Latest products</h2>
                 <a href="{{ route('shop') }}"
                     class="hidden text-sm font-medium text-green-600 hover:text-green-500 md:block">
-                    Shop the collection
+                    Get all products
                     <span aria-hidden="true"> →</span>
                 </a>
             </div>

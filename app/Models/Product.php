@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cknow\Money\Money;
+use Cviebrock\EloquentSluggable\Sluggable;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,11 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, Sluggable, InteractsWithMedia, SoftDeletes;
+    use HasFactory, InteractsWithMedia, Sluggable, SoftDeletes;
 
     public $table = 'products';
 
@@ -78,17 +78,16 @@ class Product extends Model implements HasMedia
     {
         return Money::RWF($this->price);
     }
+
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 }
