@@ -17,6 +17,7 @@ class ProductShowController extends Controller
 
         return view('product.show', ['product' => $product]);
     }
+
     public function addToCart(Request $request, $id)
     {
         $product = Product::find($id);

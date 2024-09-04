@@ -1,4 +1,4 @@
-<div class="rounded-lg border border-green-200 bg-gray-50 p-6 shadow-sm">
+<div class="rounded-md border border-green-200 bg-gray-50 p-6 shadow-sm">
     <div class="h-56 w-full">
         <a href="{{ route('product.show', $product->slug) }}">
             <img class="mx-auto h-full rounded-md"

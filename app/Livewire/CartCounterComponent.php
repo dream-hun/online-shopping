@@ -2,20 +2,27 @@
 
 namespace App\Livewire;
 
-use Darryldecode\Cart\Facades\CartFacade as Cart;
+use App\Helpers\CartManagement;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CartCounterComponent extends Component
 {
-    protected $listeners = ['productAdded' => 'update', 'productRemoved' => 'update'];
+    public $total_products = 0;
 
-    public function update()
+    public function mount()
     {
-        $this->dispatch('updateCartCount');  // Emit an event to the parent component to update the cart count
+        $this->total_products = count(CartManagement::getCartItems());
+    }
+
+    #[On('update-cart')]
+    public function updateCart($total_products)
+    {
+        $this->total_products = $total_products;
     }
 
     public function render()
     {
-        return view('livewire.cart-counter-component', ['count' => Cart::getTotalQuantity()]);
+        return view('livewire.cart-counter-component');
     }
 }

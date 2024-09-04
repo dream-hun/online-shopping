@@ -10,20 +10,19 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\CategoryShowController;
 use App\Http\Controllers\ProductShowController;
-use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Livewire\CartComponent;
+use App\Livewire\ProductComponent;
+use App\Livewire\ShoppingComponent;
+use App\Livewire\WelcomeComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $products = \App\Models\Product::take(9)->get();
-
-    return view('welcome', ['products' => $products]);
-
-})->name('home');
-Route::get('/shopping-cart', ShoppingCartController::class)->name('cart');
-Route::get('/shop', ShopController::class)->name('shop');
-Route::get('/shop/{product:slug}', [ProductShowController::class,'index'])->name('product.show');
+Route::get('/', WelcomeComponent::class)->name('landing');
+Route::get('/shopping-cart', CartComponent::class)->name('cart');
+Route::post('/update-cart/item/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
+Route::get('/shop', ShoppingComponent::class)->name('shop');
+Route::get('/shop/products/{slug}', ProductComponent::class);
 Route::post('/cart/add/{id}', [ProductShowController::class, 'addToCart'])->name('addToCart');
 Route::get('/shop/category/{category:slug}', CategoryShowController::class)->name('category.show');
 Route::get('/home', function () {

@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::share('setting', Setting::first());
-        View::share('categories', Category::withCount('products')->latest()->get());
+        View::share('categories', Category::withCount('products')->latest()->get(['id', 'name', 'slug']));
     }
 }
