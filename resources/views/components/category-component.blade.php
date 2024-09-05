@@ -5,7 +5,7 @@
             </div>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mt-8">
                 @forelse ($categories as $category)
-                    <a href="/shop?selected_categories[0]={{ $category->id }}" class="group flex flex-col bg-white shadow-sm rounded-xl hover:shadow-md transition" href="{{ route('category.show',$category->slug) }}" wire:key="{{ $category->id }}">
+                    <a href="/shop?selected_categories[0]={{ $category->id }}" class="group flex flex-col bg-white shadow-sm rounded-xl hover:shadow-md transition" wire:key="{{ $category->id }}">
                         <!-- component -->
                         @if ($category->image)
                             <img class="h-48 w-full object-cover object-center py-3 px-3" src="{{ $category->getFirstMediaUrl('image') }}" alt="{{ $category->name }}" />
