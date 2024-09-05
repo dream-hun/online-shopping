@@ -36,7 +36,7 @@
                     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-3">
                         @forelse($products as $product)
                             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow" wire:key="{{ $product->id }}">
-                                <a href="/shop/products/{{ $product->slug }}">
+                                <a href="/shop/products/{{ $product->slug }}" wire:navigate>
                                     @if($product->image)
                                         <img class="p-8 rounded-t-lg rounded-md" src="{{ $product->getFirstMediaUrl('image') }}" alt="{{ $product->name }}" />
                                     @else
@@ -44,7 +44,7 @@
                                     @endif
                                 </a>
                                 <div class="px-5 pb-5 ">
-                                    <a href="/shop/products/{{ $product->slug }}">
+                                    <a href="/shop/products/{{ $product->slug }}" wire:navigate>
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $product->name }}</h5>
                                     </a>
                                     

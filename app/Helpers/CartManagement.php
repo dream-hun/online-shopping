@@ -33,7 +33,7 @@ class CartManagement
                     'quantity' => 1,
                     'unit_amount' => $product->price,
                     'total_amount' => $product->price,
-                    'image' => $product->image,
+                    'image' => $product->getFirstMediaUrl('image'),
                 ];
             }
         }
