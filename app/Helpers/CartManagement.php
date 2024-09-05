@@ -22,7 +22,7 @@ class CartManagement
             $cartItems[$existing_item]['quantity'] += 1;
             $cartItems[$existing_item]['total'] = $cartItems[$existing_item]['quantity'] * $cartItems[$existing_item]['price'];
         } else {
-            $product = Product::with('media')->where('id', $product_id)->first(['id', 'name', 'price', 'image', 'slug', 'measurement']);
+            $product = Product::with('media')->where('id', $product_id)->first(['id', 'name', 'price','slug', 'measurement']);
             if ($product) {
                 $cartItems[] = [
                     'product_id' => $product_id,
@@ -33,7 +33,6 @@ class CartManagement
                     'quantity' => 1,
                     'unit_amount' => $product->price,
                     'total_amount' => $product->price,
-                    'image' => $product->getFirstMediaUrl('image'),
                 ];
             }
         }
@@ -57,7 +56,7 @@ class CartManagement
             $cartItems[$existing_item]['quantity'] = $quantity;
             $cartItems[$existing_item]['total'] = $cartItems[$existing_item]['quantity'] * $cartItems[$existing_item]['price'];
         } else {
-            $product = Product::with('media')->where('id', $product_id)->first(['id', 'name', 'price', 'image', 'slug', 'measurement']);
+            $product = Product::with('media')->where('id', $product_id)->first(['id', 'name', 'price','slug', 'measurement']);
             if ($product) {
                 $cartItems[] = [
                     'product_id' => $product_id,
@@ -68,7 +67,6 @@ class CartManagement
                     'quantity' => $quantity,
                     'unit_amount' => $product->price,
                     'total_amount' => $product->price,
-                    'image' => $product->getFirstMediaUrl('image'),
                 ];
             }
         }
