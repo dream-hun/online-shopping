@@ -6,7 +6,7 @@
                 <a href="tel:{{ $setting->mobile_one }}" class="font-normal px-2 py-1 text-sm">{{ $setting->mobile_one }}</a>
                 <a href="tel:{{ $setting->mobile_two }}" class="font-normal px-2 py-1 text-sm">{{ $setting->mobile_two }}</a>
                 <a href="tel:{{ $setting->whatsapp }}" class="font-normal px-2 py-1 text-sm">{{ $setting->whatsapp }}</a>
-                <a href="mailto:{{ $setting->email }}" class="font-normal px-2 py-1 text-sm">{{ $setting->email }}</a>
+                <a href="mailto:{{ $setting->email_one }}" class="font-normal px-2 py-1 text-sm">{{ $setting->email_one }}</a>
                 <a href="mailto:{{ $setting->email_two }}" class="font-normal px-2 py-1 text-sm">{{ $setting->email_two }}</a>
                 <a href="#" class="font-normal px-2 py-1 text-sm">{{ $setting->address }}</a>  
             </div>

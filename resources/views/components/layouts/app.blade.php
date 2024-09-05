@@ -10,6 +10,7 @@
         @vite('resources/css/app.css')
         @vite('resources/js/app.js')
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
        
     </head>
     <body class="font-sans antialiased bg-gray-100">

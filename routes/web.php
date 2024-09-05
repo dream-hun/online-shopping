@@ -20,11 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeComponent::class)->name('landing');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
-Route::post('/update-cart/item/{id}', [ShoppingCartController::class, 'updateCart'])->name('cart.update');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);
-Route::post('/cart/add/{id}', [ProductShowController::class, 'addToCart'])->name('addToCart');
-Route::get('/shop/category/{category:slug}', CategoryShowController::class)->name('category.show');
+
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
