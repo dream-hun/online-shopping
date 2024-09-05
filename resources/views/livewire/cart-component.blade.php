@@ -19,11 +19,10 @@
               <tr wire:key='{{ $item['product_id'] }}'>
                 <td class="py-4">
                   <div class="flex items-center">
-                    <img class="h-16 w-16 mr-4" src="https://via.placeholder.com/150" alt="Product image">
-                    <span class="font-semibold">{{ $item['name'] }}</span>
+                    <a href="/shop/products/{{ $item['slug'] }}" wire:navigate class="font-semibold">{{ $item['name'] }}</a>
                   </div>
                 </td>
-                <td class="py-4">{{ Cknow\Money\Money::RWF($item['unit_amount']) }}</td>
+                <td class="py-4">{{ Cknow\Money\Money::RWF($item['unit_amount']) }} / {{ $item['measurement'] }}</td>
                 <td class="py-4">
                   <div class="flex items-center">
                     <button wire:click='decreaseQuantity({{ $item['product_id'] }})' class="border rounded-md py-2 px-4 mr-2">-</button>

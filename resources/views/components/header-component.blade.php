@@ -1,4 +1,4 @@
-<nav x-data="{ mobileMenuOpen: false, currencyDropdownOpen: false }">
+<nav x-data="{ mobileMenuOpen: false, currencyDropdownOpen: false }" class="sticky top-0 z-50">
     <div class="hidden sm:block bg-green-800 text-white">
     <div class="container mx-auto px-4">
         <div class="flex flex-col sm:flex-row justify-between items-center py-2">
