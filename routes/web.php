@@ -8,10 +8,8 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\ChangePasswordController;
-use App\Http\Controllers\CategoryShowController;
-use App\Http\Controllers\ProductShowController;
-use App\Http\Controllers\ShoppingCartController;
 use App\Livewire\CartComponent;
+use App\Livewire\CheckoutComponent;
 use App\Livewire\ProductComponent;
 use App\Livewire\ShoppingComponent;
 use App\Livewire\WelcomeComponent;
@@ -22,6 +20,7 @@ Route::get('/', WelcomeComponent::class)->name('landing');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);
+Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
 
 Route::get('/home', function () {
     if (session('status')) {
