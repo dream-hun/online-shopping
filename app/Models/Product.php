@@ -46,6 +46,7 @@ class Product extends Model implements HasMedia
         'updated_at',
         'deleted_at',
     ];
+
     private mixed $price;
 
     protected function serializeDate(DateTimeInterface $date): string

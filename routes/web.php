@@ -26,7 +26,6 @@ Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
 //Route to subscribe to newsletter
 Route::post('/subscribe', NewsletterController::class)->name('subscribe');
 
-
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
