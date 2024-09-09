@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 class CartManagement
 {
     //add item into the cart
-    public static function addCartItem($product_id)
+    public static function addCartItem($product_id): int
     {
         $cartItems = self::getCartItems();
         $existing_item = null;
@@ -42,7 +42,7 @@ class CartManagement
     }
 
     //add item into the cart with quantity
-    public static function addCartItemWithQuantity($product_id, $quantity = 1)
+    public static function addCartItemWithQuantity($product_id, $quantity = 1): int
     {
         $cartItems = self::getCartItems();
         $existing_item = null;
@@ -97,14 +97,14 @@ class CartManagement
     }
 
     //add items into cookie
-    public static function addCartItemsToCookie($cartItems)
+    public static function addCartItemsToCookie($cartItems): void
     {
         Cookie::queue('cartItems', json_encode($cartItems), 60 * 24 * 30);
 
     }
 
     //clear shopping cart
-    public static function clearCartItems()
+    public static function clearCartItems(): void
     {
         Cookie::queue(Cookie::forget('cartItems'));
     }
@@ -142,7 +142,7 @@ class CartManagement
         $cartItems = self::getCartItems();
         foreach ($cartItems as $key => $item) {
             if ($item['product_id'] == $product_id) {
-                if ($cartItems[$key]['quantity'] == 1) {
+                if ($item['quantity'] == 1) {
                     $cartItems[$key]['quantity'] -= 1;
                     $cartItems[$key]['total_amount'] = $cartItems[$key]['quantity'] * $cartItems[$key]['unit_amount'];
                     break;
@@ -154,7 +154,7 @@ class CartManagement
         return $cartItems;
     }
 
-    public static function grandTotal($items)
+    public static function grandTotal($items): float|int
     {
         return array_sum(array_column($items, 'total_amount'));
 

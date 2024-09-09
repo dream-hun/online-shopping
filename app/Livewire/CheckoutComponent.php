@@ -3,12 +3,14 @@
 namespace App\Livewire;
 
 use App\Helpers\CartManagement;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Validate;
 use App\Livewire\Forms\CheckoutForm;
 use App\Models\Order;
 use App\Models\OrderItem;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class CheckoutComponent extends Component
@@ -17,7 +19,7 @@ class CheckoutComponent extends Component
 
     public CheckoutForm $form;
 
-    public function placeOrder()
+    public function placeOrder(): void
 
     {
         DB::beginTransaction();
@@ -33,10 +35,10 @@ class CheckoutComponent extends Component
         $cartItems=CartManagement::getCartItems();
         foreach($cartItems as $cartItem) {
             $orderItem = new OrderItem();
-            $orderItem->product_id = $cartItem['product_id'];
-            $orderItem->price = $cartItem->['price'];
-            $orderItem->quantity = $cartItem->['quantity'];
-            $orderItem->sub_total = $cartItem->['price'] * $cartItem['quantity'];
+            $orderItem->product_id = $cartItem->product_id;
+            $orderItem->price = $cartItem->price;
+            $orderItem->quantity = $cartItem->quantity;
+            $orderItem->sub_total = $cartItem->price * $cartItem->quantity;
             $order->orderItems()->save($orderItem);
         }
          $order->setOrderNo('ORD');
@@ -44,7 +46,7 @@ class CheckoutComponent extends Component
     }
 
 
-    public function render()
+    public function render(): View|Factory|Application
     {
         $cartItems = CartManagement::getCartItems();
         $grandTotal = CartManagement::grandTotal($cartItems);

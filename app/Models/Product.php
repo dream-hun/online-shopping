@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -22,7 +23,7 @@ class Product extends Model implements HasMedia
         'image',
     ];
 
-    protected $dates = [
+    protected array $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
@@ -45,8 +46,9 @@ class Product extends Model implements HasMedia
         'updated_at',
         'deleted_at',
     ];
+    private mixed $price;
 
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }
@@ -57,7 +59,7 @@ class Product extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }

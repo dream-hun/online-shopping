@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Newsletter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
 {
-    public function store(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $newsletter = new Newsletter;
         $newsletter->email = $request->email;

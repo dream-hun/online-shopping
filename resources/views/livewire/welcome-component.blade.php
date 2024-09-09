@@ -4,7 +4,7 @@
             <!-- Decorative image and overlay -->
             <div aria-hidden="true" class="absolute inset-0 overflow-hidden">
                 <img src="{{ asset('images/garden of eden produce.jpg') }}" alt="{{ config('app.name') }}"
-                    class="h-full w-full object-cover object-center">
+                     class="h-full w-full object-cover object-center">
             </div>
             <div aria-hidden="true" class="absolute inset-0 bg-gray-900 opacity-60"></div>
 
@@ -16,22 +16,23 @@
                     high
                     quality,great tasting produce.</p>
                 <a href="{{ route('shop')}}" wire:navigate
-                    class="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900">Shop Now</a>
+                   class="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900">Shop
+                    Now</a>
             </div>
         </div>
     </div>
-    <x-category-component />
+    <x-category-component/>
     <div class="bg-white">
         <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <div class="md:flex md:items-center md:justify-between">
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">Latest products</h2>
                 <a href="{{ route('shop') }}"
-                    class="hidden text-sm font-medium text-green-600 hover:text-green-500 md:block">
+                   class="hidden text-sm font-medium text-green-600 hover:text-green-500 md:block">
                     Get all products
                     <span aria-hidden="true"> →</span>
                 </a>
             </div>
-           {{--  <x-home-product-component /> --}}
+            {{--  <x-home-product-component /> --}}
         </div>
     </div>
 </div>
