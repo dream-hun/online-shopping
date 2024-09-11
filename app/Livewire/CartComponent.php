@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Helpers\CartManagement;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -10,39 +13,39 @@ use Livewire\Component;
 
 class CartComponent extends Component
 {
-    public $cartItems = [];
+    public $items = [];
 
     public $cartTotal;
 
-    public function mount()
+    public function mount(): void
     {
-        $this->cartItems = CartManagement::getCartItems();
-        $this->cartTotal = CartManagement::grandTotal($this->cartItems);
+        $this->items = CartManagement::getCartItems();
+        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
     }
 
-    public function removeItem($product_id)
+    public function removeItem($product_id): void
     {
-        $this->cartItems = CartManagement::removeCartItem($product_id);
-        $this->cartTotal = CartManagement::grandTotal($this->cartItems);
-        $this->dispatch('update-cart', total_products: count($this->cartItems))->to(CartCounterComponent::class);
+        $this->items = CartManagement::removeItemFromCart($product_id);
+        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
+        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
     }
 
-    public function increaseQuantity($product_id)
+    public function increaseQuantity($product_id): void
     {
-        $this->cartItems = CartManagement::increaseQuantity($product_id);
-        $this->cartTotal = CartManagement::grandTotal($this->cartItems);
-        $this->dispatch('update-cart', total_products: count($this->cartItems))->to(CartCounterComponent::class);
+        $this->items = CartManagement::increaseQuantity($product_id);
+        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
+        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
 
     }
 
-    public function decreaseQuantity($product_id)
+    public function decreaseQuantity($product_id): void
     {
-        $this->cartItems = CartManagement::decreaseQuantity($product_id);
-        $this->cartTotal = CartManagement::grandTotal($this->cartItems);
-        $this->dispatch('update-cart', total_products: count($this->cartItems))->to(CartCounterComponent::class);
+        $this->items = CartManagement::decreaseQuantity($product_id);
+        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
+        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
     }
 
-    public function render()
+    public function render(): Application|Factory|View|\Illuminate\View\View
     {
         return view('livewire.cart-component');
     }

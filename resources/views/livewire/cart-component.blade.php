@@ -15,7 +15,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($cartItems as $item)
+                        @forelse($items as $item)
                             <tr wire:key='{{ $item['product_id'] }}'>
                                 <td class="py-4">
                                     <div class="flex items-center">

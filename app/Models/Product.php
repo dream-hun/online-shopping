@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Image\Enums\Fit;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, Sluggable, SoftDeletes;
+    use  InteractsWithMedia, Sluggable, SoftDeletes;
 
     public $table = 'products';
 
@@ -47,7 +48,7 @@ class Product extends Model implements HasMedia
         'deleted_at',
     ];
 
-    private mixed $price;
+
 
     protected function serializeDate(DateTimeInterface $date): string
     {
