@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Helpers\CartManagement;
 use App\Models\Product;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -18,39 +18,78 @@ class ProductComponent extends Component
 
     public $quantity = 1;
 
+    public $product;
+
+    protected $rules = [
+        'quantity' => 'required|numeric|min:0.5',
+    ];
+
     public function mount($slug): void
     {
         $this->slug = $slug;
+        $this->product = Product::where('slug', $this->slug)->firstOrFail();
     }
 
     public function increaseQuantity(): void
     {
         $this->quantity++;
+        $this->validateOnly('quantity');
     }
 
     public function decreaseQuantity(): void
     {
-        if ($this->quantity > 1) {
+        if ($this->quantity > 0.5) {
             $this->quantity--;
         }
+        $this->validateOnly('quantity');
     }
 
-    //add product into cart
-    public function addToCart($product_id): void
+    public function updatedQuantity()
     {
-        $total_products = CartManagement::addCartItemWithQuantity($product_id, $this->quantity);
-        $this->dispatch('update-cart', total_products: $total_products)->to(CartCounterComponent::class);
-        $this->alert('success', 'Product is added to cart successfully!!', [
+        $this->validateOnly('quantity');
+    }
+
+    public function addToCart(): void
+    {
+        $this->validate();
+
+        $item = Cart::add([
+            'id' => $this->product->id,
+            'name' => $this->product->name,
+            'quantity' => $this->quantity,
+            'price' => $this->product->price,
+        ]);
+
+        $item->associate(Product::class);
+
+        $this->dispatch('update-cart');
+
+        $this->alert('success', $this->product->name.' is added to cart successfully!', [
+            'position' => 'top-end',
+            'timer' => 3000,
+            'toast' => true,
+        ]);
+
+        $this->quantity = 1;
+    }
+
+    public function removeFromCart(): void
+    {
+        Cart::remove($this->product->id);
+        $this->dispatch('update-cart');
+        $this->alert('error', $this->product->name.' is removed from cart successfully!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
         ]);
     }
 
-    public function render(): Application|Factory|View|\Illuminate\View\View
+    public function render(): View|Factory|Application
     {
-        $product = Product::where('slug', $this->slug)->firstOrFail();
+        $inCart = Cart::get($this->product->id) !== null;
 
-        return view('livewire.product-component', ['product' => $product]);
+        return view('livewire.product-component', [
+            'inCart' => $inCart,
+        ]);
     }
 }

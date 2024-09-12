@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cknow\Money\Money;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,4 +45,15 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function formattedPrice(): Money
+    {
+        return Money::RWF($this->price);
+    }
+
+    public function formattedSubtotal(): Money
+    {
+        return Money::RWF($this->price * $this->quantity);
+    }
+    
 }

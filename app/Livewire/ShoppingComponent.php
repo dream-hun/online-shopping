@@ -2,8 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Helpers\CartManagement;
+use App\Models\Category;
 use App\Models\Product;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -16,7 +17,7 @@ use Livewire\WithPagination;
 #[Title('Shop - Garden of Eden Produce')]
 class ShoppingComponent extends Component
 {
-    use LivewireAlert,WithPagination;
+    use LivewireAlert, WithPagination;
 
     #[Url()]
     public $selected_categories = [];
@@ -24,20 +25,43 @@ class ShoppingComponent extends Component
     #[Url()]
     public $sort = 'latest';
 
-    //add product into cart
-    public function addToCart($product_id): void
+    public function addToCart($productId)
     {
-        $total_products = CartManagement::addItemToCart($product_id);
-        $this->dispatch('update-cart', total_products: $total_products)->to(CartCounterComponent::class);
-        $this->alert('success', 'Product is added to cart successfully!!', [
+        $product = Product::findOrFail($productId);
+        $item = Cart::add([
+            'id' => $product->id,
+            'name' => $product->name,
+            'quantity' => 1,
+            'price' => $product->price,
+        ]);
+
+        $item->associate(Product::class);
+
+        $this->dispatch('update-cart');
+
+        $this->alert('success', $product->name.' is added to cart successfully!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
         ]);
     }
 
-    public function render(): Application|Factory|View|\Illuminate\View\View
+    public function removeFromCart($productId)
     {
+        $product = Product::findOrFail($productId);
+        Cart::remove($productId);
+        $this->dispatch('update-cart');
+        $this->alert('error', $product->name.' is removed from cart successfully!', [
+            'position' => 'top-end',
+            'timer' => 3000,
+            'toast' => true,
+        ]);
+    }
+
+    public function render(): View|Factory|Application
+    {
+        $categories = Category::all();
+
         $products = Product::with(['category', 'media']);
         if (! empty($this->selected_categories)) {
             $products->whereIn('category_id', $this->selected_categories);
@@ -52,6 +76,18 @@ class ShoppingComponent extends Component
             $products->orderBy('price', 'asc');
         }
 
-        return view('livewire.shopping-component', ['products' => $products->paginate(6)]);
+        $products = $products->paginate(12);
+
+        // Add a 'inCart' property to each product
+        $products->getCollection()->transform(function ($product) {
+            $product->inCart = Cart::get($product->id) !== null;
+
+            return $product;
+        });
+
+        return view('livewire.shopping-component', [
+            'products' => $products,
+            'categories' => $categories,
+        ]);
     }
 }

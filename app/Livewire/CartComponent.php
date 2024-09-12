@@ -2,51 +2,88 @@
 
 namespace App\Livewire;
 
-use App\Helpers\CartManagement;
+use App\Models\Product;
+use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Shopping Cart - Garden of Eden Produce')]
-
 class CartComponent extends Component
 {
-    public $items = [];
+    use LivewireAlert;
 
-    public $cartTotal;
-
-    public function mount(): void
+    public function removeItem($rowId): void
     {
-        $this->items = CartManagement::getCartItems();
-        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
+        $item = Cart::get($rowId);
+        if ($item) {
+            Cart::remove($rowId);
+            $this->dispatch('update-cart');
+            $this->alert('success', $item->name.' has been removed from the cart.', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        }
     }
 
-    public function removeItem($product_id): void
+    public function increaseQuantity($rowId): void
     {
-        $this->items = CartManagement::removeItemFromCart($product_id);
-        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
-        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
+        $item = Cart::get($rowId);
+        if ($item) {
+            Cart::update($rowId, [
+                'quantity' => 1,
+            ]);
+            $this->dispatch('update-cart');
+            $this->alert('success', $item->name.' quantity has been increased.', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        }
     }
 
-    public function increaseQuantity($product_id): void
+    public function decreaseQuantity($rowId): void
     {
-        $this->items = CartManagement::increaseQuantity($product_id);
-        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
-        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
-
+        $item = Cart::get($rowId);
+        if ($item && $item->quantity > 1) {
+            Cart::update($rowId, [
+                'quantity' => -1,
+            ]);
+            $this->dispatch('update-cart');
+            $this->alert('success', $item->name.' quantity has been decreased.', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        } elseif ($item && $item->quantity == 1) {
+            $this->alert('warning', 'Quantity cannot be less than 1. Use remove button to delete the item.', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        }
     }
 
-    public function decreaseQuantity($product_id): void
+    public function render(): View|Application|Factory|\Illuminate\View\View
     {
-        $this->items = CartManagement::decreaseQuantity($product_id);
-        $this->cartTotal = CartManagement::calculateGrandTotal($this->items);
-        $this->dispatch('update-cart', total_products: count($this->items))->to(CartCounterComponent::class);
-    }
+        $cartItems = Cart::getContent();
 
-    public function render(): Application|Factory|View|\Illuminate\View\View
-    {
-        return view('livewire.cart-component');
+        // Fetch product details including images
+        $cartItemsWithImages = $cartItems->map(function ($item) {
+            $product = Product::find($item->id);
+            if ($product) {
+                $imageUrl = $product->getFirstMediaUrl('image', 'thumb');
+
+                return array_merge($item->toArray(), ['image_url' => $imageUrl]);
+            }
+
+            return $item;
+        });
+
+        return view('livewire.cart-component', ['cartItems' => $cartItemsWithImages, 'cart' => $cartItems]);
     }
 }
