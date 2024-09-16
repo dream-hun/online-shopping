@@ -7,8 +7,8 @@ use Livewire\Form;
 
 class CheckoutForm extends Form
 {
-    #[Validate('required', message: 'Please fill out your both names.')]
-    #[Validate('min:5', message: 'Please anter a meaningful name.')]
+    #[Validate('required', message: 'Please fill out your full name.')]
+    #[Validate('min:5', message: 'Please enter a meaningful name.')]
     public $client_name = '';
 
     #[Validate('required', message: 'Please fill out your mobile number.')]
@@ -21,10 +21,13 @@ class CheckoutForm extends Form
     #[Validate('required', message: 'Please fill out your shipping address.')]
     public $shipping_address = '';
 
-    #[Validate('required', message: 'Please choose payment type.')]
+    #[Validate('required', message: 'Please choose a payment type.')]
     public $payment_type = '';
 
-    #[Validate('required', message: 'Please fill out your notes.')]
-    #[Validate('max:500', message: 'Please order note should not exceed 500 words.')]
+    #[Validate('required', message: 'Please choose one delivery method.')]
+    public $delivery_method = '';
+
+    #[Validate('nullable')]
+    #[Validate('max:500', message: 'Order note should not exceed 500 characters.')]
     public $notes = '';
 }

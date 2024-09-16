@@ -43,6 +43,7 @@ class Order extends Model
         'shipping_address',
         'notes',
         'payment_type',
+        'delivery_method',
         'updated_by_id',
         'created_at',
         'updated_at',

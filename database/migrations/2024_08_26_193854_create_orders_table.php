@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('shipping_address');
             $table->longText('notes')->nullable();
             $table->string('payment_type')->nullable();
+            $table->string('delivery_method')->nullable();
             $table->unsignedBigInteger('updated_by_id')->nullable();
             $table->foreign('updated_by_id', 'updated_by_fk_10063261')->references('id')->on('users');
             $table->timestamps();

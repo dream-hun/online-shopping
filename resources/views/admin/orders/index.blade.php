@@ -53,7 +53,6 @@
                     @foreach($orders as $key => $order)
                         <tr data-entry-id="{{ $order->id }}">
                             <td>
-
                             </td>
                             <td>
                                 {{ $order->id ?? '' }}
@@ -97,10 +96,7 @@
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
-
-
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>

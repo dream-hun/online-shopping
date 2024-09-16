@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\NewsletterController;
+use App\Livewire\AboutComponent;
 use App\Livewire\CartComponent;
 use App\Livewire\CheckoutComponent;
 use App\Livewire\ProductComponent;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeComponent::class)->name('landing');
+Route::get('/about-us', AboutComponent::class)->name('about-us');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);

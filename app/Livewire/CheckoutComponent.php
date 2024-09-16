@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\DeliveryMethod;
 use App\Livewire\Forms\CheckoutForm;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -24,39 +25,53 @@ class CheckoutComponent extends Component
 
     public function placeOrder(): void
     {
+        $this->form->validate();
+
         DB::beginTransaction();
-        $order = new Order;
-        $order->client_phone = $this->form->client_phone;
-        $order->email = $this->form->email;
-        $order->client_name = $this->form->client_name;
-        $order->shipping_address = $this->form->shipping_address;
-        $order->payment_type = $this->form->payment_type;
-        $order->notes = $this->form->notes;
-        $order->status = 'Pending';
-        $order->save();
+        try {
+            $order = new Order;
+            $order->client_phone = $this->form->client_phone;
+            $order->email = $this->form->email;
+            $order->client_name = $this->form->client_name;
+            $order->shipping_address = $this->form->shipping_address;
+            $order->payment_type = $this->form->payment_type;
+            $order->delivery_method = $this->form->delivery_method;
+            $order->notes = $this->form->notes;
+            $order->status = 'Pending';
+            $order->save();
 
-        $cartItems = Cart::getContent();
-        foreach ($cartItems as $cartItem) {
-            $product = Product::find($cartItem->id);
-            if ($product) {
-                $orderItem = new OrderItem;
-                $orderItem->product_id = $product->id;
-                $orderItem->price = $cartItem->price;
-                $orderItem->quantity = $cartItem->quantity;
-                $orderItem->subtotal = $cartItem->price * $cartItem->quantity;
-                $order->orderItems()->save($orderItem);
+            $cartItems = Cart::getContent();
+            foreach ($cartItems as $cartItem) {
+                $product = Product::find($cartItem->id);
+                if ($product) {
+                    $orderItem = new OrderItem;
+                    $orderItem->product_id = $product->id;
+                    $orderItem->price = $cartItem->price;
+                    $orderItem->quantity = $cartItem->quantity;
+                    $orderItem->subtotal = $cartItem->price * $cartItem->quantity;
+                    $order->orderItems()->save($orderItem);
+                }
             }
-        }
-        $order->setOrderNo('ORD');
-        DB::commit();
+            $order->setOrderNo('ORD');
+            DB::commit();
 
-        Cart::clear(); // Clear the cart after successful order placement
-        $this->dispatch('update-cart');
-        $this->alert('success', 'Your order is placed successfully!', [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+            Cart::clear(); // Clear the cart after successful order placement
+            $this->dispatch('update-cart');
+            $this->alert('success', 'Your order is placed successfully!', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+
+            $this->form->reset();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->alert('error', 'An error occurred while placing your order. Please try again.', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        }
     }
 
     public function render(): View|Factory|Application
@@ -75,7 +90,11 @@ class CheckoutComponent extends Component
 
             return $item;
         });
+        $deliveryMethods = DeliveryMethod::cases();
 
-        return view('livewire.checkout-component', ['cartItems' => $cartItemsWithDetails]);
+        return view('livewire.checkout-component', [
+            'cartItems' => $cartItemsWithDetails,
+            'deliveryMethods' => $deliveryMethods,
+        ]);
     }
 }

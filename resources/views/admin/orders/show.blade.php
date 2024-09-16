@@ -63,7 +63,7 @@
             </table>
 
             <div class="mt-4">
-                <p><strong>Notes:</strong> Lorem ipsum</p>
+                <p><strong>Notes:</strong>{{ $order->notes }}</p>
             </div>
         </div>
     </div>

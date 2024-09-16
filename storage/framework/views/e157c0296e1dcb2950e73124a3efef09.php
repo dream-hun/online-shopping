@@ -4,20 +4,20 @@
             <div class="flex flex-col sm:flex-row justify-between items-center py-2">
                 <div class="flex flex-wrap justify-center sm:justify-start">
                     <a href="tel:<?php echo e($setting->mobile_one); ?>"
-                       class="font-normal px-2 py-1 text-sm"><?php echo e($setting->mobile_one); ?></a>
+                        class="font-semibold px-2 py-1 text-md"><?php echo e(App\Helpers\Garden::formatPhoneUs($setting->mobile_one)); ?></a>
                     <a href="tel:<?php echo e($setting->mobile_two); ?>"
-                       class="font-normal px-2 py-1 text-sm"><?php echo e($setting->mobile_two); ?></a>
+                        class="font-semibold px-2 py-1 text-md"><?php echo e(App\Helpers\Garden::formatPhoneUs($setting->mobile_two)); ?></a>
                     <a href="tel:<?php echo e($setting->whatsapp); ?>"
-                       class="font-normal px-2 py-1 text-sm"><?php echo e($setting->whatsapp); ?></a>
+                        class="font-semibold px-2 py-1 text-md"><?php echo e(App\Helpers\Garden::formatPhoneUs($setting->whatsapp)); ?></a>
                     <a href="mailto:<?php echo e($setting->email_one); ?>"
-                       class="font-normal px-2 py-1 text-sm"><?php echo e($setting->email_one); ?></a>
+                        class="font-semibold px-2 py-1 text-md"><?php echo e($setting->email_one); ?></a>
                     <a href="mailto:<?php echo e($setting->email_two); ?>"
-                       class="font-normal px-2 py-1 text-sm"><?php echo e($setting->email_two); ?></a>
-                    <a href="#" class="font-normal px-2 py-1 text-sm"><?php echo e($setting->address); ?></a>
+                        class="font-semibold px-2 py-1 text-md"><?php echo e($setting->email_two); ?></a>
+                    <a href="#" class="font-semibold px-2 py-1 text-md"><?php echo e($setting->address); ?></a>
                 </div>
                 <div class="mt-2 sm:mt-0 flex space-x-4">
-                    <a href="#" class="text-sm">Sign in</a>
-                    <a href="#" class="text-sm">Create an account</a>
+                    <a href="<?php echo e(route('login')); ?>" wire:navigate class="text-md font-semibold">Sign in</a>
+                    <a href="#" class="text-md font-semibold">Create an account</a>
                 </div>
             </div>
         </div>
@@ -28,15 +28,18 @@
                 <div class="shrink-0 flex items-center">
                     <a href="<?php echo e(route('landing')); ?>">
                         <img src="<?php echo e(asset('images/logo.webp')); ?>" alt="<?php echo e(config('app.name')); ?>"
-                             class="block h-14 w-auto">
+                            class="block h-14 w-auto">
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-6">
                     <a href="<?php echo e(route('landing')); ?>" wire:navigate
-                       class="hover:text-green-700 hover:font-semibold">Home</a>
-                    <a href="<?php echo e(route('shop')); ?>" wire:navigate class="hover:text-green-700 hover:font-semibold">Shop</a>
-                    <a href="#" class="hover:text-green-700 hover:font-semibold">About us</a>
+                        class="hover:text-green-700 hover:font-semibold">Home</a>
+                    <a href="<?php echo e(route('shop')); ?>" wire:navigate
+                        class="hover:text-green-700 hover:font-semibold">Shop</a>
+                    <a href="<?php echo e(route('about-us')); ?>" wire:navigate
+                        class="hover:text-green-700 hover:font-semibold">About us</a>
                     <a href="#" class="hover:text-green-700 hover:font-semibold">Notices</a>
+                    <a href="#" class="hover:text-green-700 hover:font-semibold">Contact us</a>
                 </div>
                 <?php
 $__split = function ($name, $params = []) {

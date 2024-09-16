@@ -55,5 +55,4 @@ class OrderItem extends Model
     {
         return Money::RWF($this->price * $this->quantity);
     }
-    
 }
