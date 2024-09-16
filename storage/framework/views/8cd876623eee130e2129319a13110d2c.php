@@ -28,68 +28,53 @@
                         <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-2xl">About Us - Garden of
                             Eden Produce Ltd.
                         </h1>
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
+                        <p class="relative mt-6 text-lg leading-8 text-gray-900 sm:max-w-md lg:max-w-none">
                             Welcome to Garden of Eden Produce Ltd., your trusted provider of fresh, organic groceries.
                             We are dedicated to bringing the finest, sustainably grown produce from our farms to your
                             table. Our mission is simple: to nurture the earth while nourishing you with healthy,
                             natural food that supports a sustainable lifestyle.
                         </p>
-                        <h3 class="relative mt-6 font-bold text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
+                        <h3 class="relative mt-6 font-bold text-2xl leading-8 text-gray-900 sm:max-w-md lg:max-w-none">
                             Our Story</h3>
 
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">GARDEN OF
+                        <p class="relative mt-6 text-lg leading-8 text-gray-900 sm:max-w-md lg:max-w-none">GARDEN OF
                             EDEN PRODUCE is a Rwandan company which organically grows and deliver variety of fresh
                             groceries (fruits, vegetables and herbs) mostly those which were unavailable on Rwandan
                             market before. And mainly we focus on veggies, fruits and herbs with tremendous healthy
                             benefits. By experience gained from our father who was in this business 40 years the quality
                             of our groceries is guaranteed. </p>
-                        <h4 class="relative mt-6 font-bold text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
+                        <h4 class="relative mt-6 font-bold text-2xl leading-8 text-gray-900 sm:max-w-md lg:max-w-none">
                             Why Choose Us?</h4>
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
+                        <p class="relative mt-6 text-lg leading-8 text-gray-900 sm:max-w-md lg:max-w-none">
                             At Garden of Eden, we believe that healthy living starts with clean, high-quality food.
-                            That’s why we prioritize:
+                            That’s why we prioritize:</p>
                         <ul class="list-disc list-inside">
-                            <li class="text-gray-600 text-lg">
-                                <strong> Certified Organic Farming:</strong> Our
+                            <li class="text-gray-900 text-lg mt-4">
+                                <strong>Certified Organic Farming:</strong> Our
                                 produce is grown without synthetic
                                 pesticides, herbicides, or genetically modified organisms (GMOs), ensuring the most
                                 natural food for you and your family.
                             </li>
+                            <li class="text-gray-900 text-lg mt-4">
+                                <strong>Sustainability:</strong> We practice crop rotation, composting, and water
+                                conservation to maintain soil fertility and promote biodiversity. Our commitment to the
+                                environment ensures that we minimize our ecological footprint while producing
+                                nutrient-rich, flavorful food.
+                            </li>
+                            <li class="text-gray-900 text-lg mt-4">
+                                <strong> Freshness Guaranteed:</strong> Our produce is harvested at peak ripeness and
+                                delivered promptly, ensuring you get the freshest, most nutritious groceries available.
+                            </li>
                         </ul>
-                        </p>
-                        <h4 class="relative mt-6 font-bold text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            CV Writing
-                        </h4>
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            Professional CV editing and proofreading services to create a standout resume
-                            Tailored advice on crafting compelling CVs that highlight your skills and experience
-                            Tips on optimizing your CV for applicant tracking systems (ATS) to increase visibility to
-                            employers
-                        </p>
-                        <h4 class="relative mt-6 font-bold text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            Job Search Skills
-                        </h4>
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            Training modules and resources to enhance your job search skills
-                            Strategies for preparing for interviews, including mock interview sessions and interview
-                            question guides
-                            Insights into industry trends and market demand to inform your job search strategy
-                        </p>
-                        <h4 class="relative mt-6 font-bold text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            Headhunting
-                        </h4>
-                        <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                            Access to a network of top talent across various industries and professions
-                            Customized headhunting services to match employers with qualified candidates
-                            Comprehensive candidate screening and assessment process to ensure quality matches
-                        </p>
-                        </p>
+
+
+
                     </div>
                     <div class="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                         <div
                             class="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                                <img src="https://images.pexels.com/photos/8573839/pexels-photo-8573839.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     alt=""
                                     class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg">
                                 <div
@@ -99,7 +84,7 @@
                         </div>
                         <div class="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                                <img src="https://images.pexels.com/photos/5945945/pexels-photo-5945945.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     alt=""
                                     class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg">
                                 <div
@@ -107,7 +92,7 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80"
+                                <img src="https://images.pexels.com/photos/9099656/pexels-photo-9099656.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     alt=""
                                     class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg">
                                 <div
@@ -117,7 +102,7 @@
                         </div>
                         <div class="w-44 flex-none space-y-8 pt-32 sm:pt-0">
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=left&w=400&h=528&q=80"
+                                <img src="https://images.pexels.com/photos/8455389/pexels-photo-8455389.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     alt=""
                                     class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg">
                                 <div
@@ -125,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                                <img src="https://images.pexels.com/photos/7890119/pexels-photo-7890119.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     alt=""
                                     class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg">
                                 <div
