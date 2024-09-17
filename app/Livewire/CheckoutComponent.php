@@ -4,14 +4,19 @@ namespace App\Livewire;
 
 use App\Enums\DeliveryMethod;
 use App\Livewire\Forms\CheckoutForm;
+use App\Mail\ClientOrderNotification;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\NewOrderNotification;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -54,6 +59,11 @@ class CheckoutComponent extends Component
             }
             $order->setOrderNo('ORD');
             DB::commit();
+            Mail::to($order->email)->send(new ClientOrderNotification($order));
+            $users = User::whereHas('roles', function ($query) {
+                return $query->where('title', 'Admin');
+            })->get();
+            Notification::send($users, new NewOrderNotification($order));
 
             Cart::clear(); // Clear the cart after successful order placement
             $this->dispatch('update-cart');

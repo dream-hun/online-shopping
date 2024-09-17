@@ -65,7 +65,7 @@
             </table>
 
             <div class="mt-4">
-                <p><strong>Notes:</strong> Lorem ipsum</p>
+                <p><strong>Notes:</strong><?php echo e($order->notes); ?></p>
             </div>
         </div>
     </div>
