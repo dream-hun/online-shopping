@@ -5,13 +5,13 @@
                 <div class="w-full mb-8 md:w-1/2 md:mb-0">
                     <div class="sticky top-0 z-40 overflow-hidden ">
                         <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
-                            @if ($product->image)
-                                <img src="{{ $product->getFirstMediaUrl('image') }}" alt="{{ $product->name }}"
+                            <!--[if BLOCK]><![endif]--><?php if($product->image): ?>
+                                <img src="<?php echo e($product->getFirstMediaUrl('image')); ?>" alt="<?php echo e($product->name); ?>"
                                     class="object-cover w-full lg:h-full ">
-                            @else
-                                <img src="{{ asset('images/No-image.png') }}" alt="{{ $product->name }}"
+                            <?php else: ?>
+                                <img src="<?php echo e(asset('images/No-image.png')); ?>" alt="<?php echo e($product->name); ?>"
                                     class="object-cover w-full lg:h-full ">
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -19,13 +19,14 @@
                     <div class="lg:pl-20">
                         <div class="mb-8 [&>ul]:list-disc [&>:ul]:ml-4">
                             <h2 class="max-w-xl mb-6 text-md font-bold md:text-4xl">
-                                {{ $product->name }}</h2>
+                                <?php echo e($product->name); ?></h2>
                             <p class="inline-block mb-6 text-md font-bold text-gray-900 ">
                                 <span
-                                    class="text-md">{{ $product->formattedPrice() }}/{{ $product->measurement }}</span>
+                                    class="text-md"><?php echo e($product->formattedPrice()); ?>/<?php echo e($product->measurement); ?></span>
                             </p>
                             <p class="max-w-md text-gray-700 dark:text-gray-400">
-                                {!! Str::markdown($product->description) !!}
+                                <?php echo Str::markdown($product->description); ?>
+
                             </p>
                         </div>
                         <div class="w-32 mb-8 ">
@@ -44,24 +45,44 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-4">
-                            @if ($inCart)
+                            <!--[if BLOCK]><![endif]--><?php if($inCart): ?>
                                 <button wire:click='removeFromCart'
                                     class="w-full p-4 bg-red-600 rounded-md lg:w-2/5 dark:text-white text-white hover:bg-red-700">
                                     <span wire:loading.remove wire:target='removeFromCart'>Remove from cart</span>
                                     <span wire:loading wire:target='removeFromCart'>Removing ...</span>
                                 </button>
-                            @else
+                            <?php else: ?>
                                 <button wire:click='addToCart'
                                     class="w-full p-4 bg-green-800 rounded-md lg:w-2/5 dark:text-white text-white hover:bg-green-700">
                                     <span wire:loading.remove wire:target='addToCart'>Add to cart</span>
                                     <span wire:loading wire:target='addToCart'>Adding ...</span>
                                 </button>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <x-related-products-component :product="$product" />
+    <?php if (isset($component)) { $__componentOriginal911a97fc6ca007c8a2ca353ed70e1ee1 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal911a97fc6ca007c8a2ca353ed70e1ee1 = $attributes; } ?>
+<?php $component = App\View\Components\RelatedProductsComponent::resolve(['product' => $product] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('related-products-component'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\RelatedProductsComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal911a97fc6ca007c8a2ca353ed70e1ee1)): ?>
+<?php $attributes = $__attributesOriginal911a97fc6ca007c8a2ca353ed70e1ee1; ?>
+<?php unset($__attributesOriginal911a97fc6ca007c8a2ca353ed70e1ee1); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal911a97fc6ca007c8a2ca353ed70e1ee1)): ?>
+<?php $component = $__componentOriginal911a97fc6ca007c8a2ca353ed70e1ee1; ?>
+<?php unset($__componentOriginal911a97fc6ca007c8a2ca353ed70e1ee1); ?>
+<?php endif; ?>
 </div>
+<?php /**PATH /home/hunter/Codes/online-shopping/resources/views/livewire/product-component.blade.php ENDPATH**/ ?>

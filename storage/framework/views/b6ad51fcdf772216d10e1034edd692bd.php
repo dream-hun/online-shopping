@@ -3,7 +3,7 @@
         <div class="relative bg-gray-900">
             <!-- Decorative image and overlay -->
             <div aria-hidden="true" class="absolute inset-0 overflow-hidden">
-                <img src="<?php echo e(asset('images/garden of eden produce.jpg')); ?>" alt="<?php echo e(config('app.name')); ?>"
+                <img src="<?php echo e(asset('images/garden-of-eden-produce.webp')); ?>" alt="<?php echo e(config('app.name')); ?>"
                     class="h-full w-full object-cover object-center">
             </div>
             <div aria-hidden="true" class="absolute inset-0 bg-gray-900 opacity-60"></div>
