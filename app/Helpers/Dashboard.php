@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Helpers;
 
@@ -13,6 +13,7 @@ class Dashboard
             $query->where('status', 'Paid');
         })->sum('sub_total');
     }
+
     public static function totalClients()
     {
         return Order::distinct('clientName')->count('clientName');

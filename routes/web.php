@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\SuccessfulOrderController;
 use App\Livewire\AboutComponent;
 use App\Livewire\CartComponent;
 use App\Livewire\CheckoutComponent;
@@ -24,6 +25,7 @@ Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);
 Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
+Route::get('/order-confirmation/{id}', SuccessfulOrderController::class)->name('order-success');
 
 //Route to subscribe to newsletter
 Route::post('/subscribe', NewsletterController::class)->name('subscribe');

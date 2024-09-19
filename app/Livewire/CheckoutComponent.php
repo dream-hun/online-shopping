@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\DeliveryMethod;
+use App\Helpers\Garden;
 use App\Livewire\Forms\CheckoutForm;
 use App\Mail\ClientOrderNotification;
 use App\Models\Order;
@@ -18,17 +19,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CheckoutComponent extends Component
 {
     use LivewireAlert;
 
-    #[Title('Checkout - Garden of Eden Produce')]
     public CheckoutForm $form;
 
-    public function placeOrder(): void
+    public function placeOrder()
     {
         $this->form->validate();
 
@@ -74,6 +73,8 @@ class CheckoutComponent extends Component
             ]);
 
             $this->form->reset();
+
+            return redirect()->route('order-success', ['id' => Garden::encryptId($order->id)]);
         } catch (\Exception $e) {
             DB::rollBack();
             $this->alert('error', 'An error occurred while placing your order. Please try again.', [
@@ -101,6 +102,15 @@ class CheckoutComponent extends Component
             return $item;
         });
         $deliveryMethods = DeliveryMethod::cases();
+        seo()
+            ->title('Checkout', 'Garden of Eden Produce Ltd')
+            ->description('Complete your purchase and finalize your order at our secure checkout page.')
+            ->canonicalEnabled(true) 
+            ->keywords('checkout, order, purchase, secure payment,garden of eden produce,Rwanda, kigali, online shopping groceries in kigali')
+            ->images(
+                'https://mywebsite.com/images/blog-1/cover-image.webp',
+                'https://mywebsite.com/images/blog-1/another-image.webp',
+            );
 
         return view('livewire.checkout-component', [
             'cartItems' => $cartItemsWithDetails,

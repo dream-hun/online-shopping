@@ -3,7 +3,7 @@
         <div class="relative bg-gray-900">
             <!-- Decorative image and overlay -->
             <div aria-hidden="true" class="absolute inset-0 overflow-hidden">
-                <img src="{{ asset('images/garden of eden produce.jpg') }}" alt="{{ config('app.name') }}"
+                <img src="{{ asset('images/garden-of-eden-produce.webp') }}" alt="{{ config('app.name') }}"
                     class="h-full w-full object-cover object-center">
             </div>
             <div aria-hidden="true" class="absolute inset-0 bg-gray-900 opacity-60"></div>

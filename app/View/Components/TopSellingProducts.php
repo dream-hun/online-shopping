@@ -2,9 +2,9 @@
 
 namespace App\View\Components;
 
-use Illuminate\View\Component;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\Component;
 
 class TopSellingProducts extends Component
 {

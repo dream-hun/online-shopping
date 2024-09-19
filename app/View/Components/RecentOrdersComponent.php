@@ -10,6 +10,7 @@ use Illuminate\View\Component;
 class RecentOrdersComponent extends Component
 {
     public $orders;
+
     /**
      * Create a new component instance.
      */
