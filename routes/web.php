@@ -13,6 +13,7 @@ use App\Http\Controllers\SuccessfulOrderController;
 use App\Livewire\AboutComponent;
 use App\Livewire\CartComponent;
 use App\Livewire\CheckoutComponent;
+use App\Livewire\ContactComponent;
 use App\Livewire\ProductComponent;
 use App\Livewire\ShoppingComponent;
 use App\Livewire\WelcomeComponent;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeComponent::class)->name('landing');
 Route::get('/about-us', AboutComponent::class)->name('about-us');
+Route::get('/cobtact-us',ContactComponent::class)->name('contact');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);
