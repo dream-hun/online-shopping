@@ -14,6 +14,7 @@ use App\Livewire\AboutComponent;
 use App\Livewire\CartComponent;
 use App\Livewire\CheckoutComponent;
 use App\Livewire\ContactComponent;
+use App\Livewire\NoticesComponent;
 use App\Livewire\ProductComponent;
 use App\Livewire\ShoppingComponent;
 use App\Livewire\WelcomeComponent;
@@ -22,12 +23,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeComponent::class)->name('landing');
 Route::get('/about-us', AboutComponent::class)->name('about-us');
-Route::get('/cobtact-us',ContactComponent::class)->name('contact');
+Route::get('/cobtact-us', ContactComponent::class)->name('contact');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
 Route::get('/shop/products/{slug}', ProductComponent::class);
 Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/order-confirmation/{id}', SuccessfulOrderController::class)->name('order-success');
+Route::get('/notice-board', NoticesComponent::class)->name('notices');
 
 //Route to subscribe to newsletter
 Route::post('/subscribe', NewsletterController::class)->name('subscribe');
@@ -94,5 +96,3 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

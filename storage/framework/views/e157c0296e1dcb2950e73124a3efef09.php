@@ -38,8 +38,10 @@
                         class="hover:text-green-700 hover:font-semibold">Shop</a>
                     <a href="<?php echo e(route('about-us')); ?>" wire:navigate
                         class="hover:text-green-700 hover:font-semibold">About us</a>
-                    <a href="#" class="hover:text-green-700 hover:font-semibold">Notices</a>
-                    <a href="<?php echo e(route('contact')); ?>" class="hover:text-green-700 hover:font-semibold">Contact us</a>
+                    <a href="<?php echo e(route('notices')); ?>" wire:navigate
+                        class="hover:text-green-700 hover:font-semibold">Notices</a>
+                    <a href="<?php echo e(route('contact')); ?>" wire:navigate
+                        class="hover:text-green-700 hover:font-semibold">Contact us</a>
                 </div>
                 <?php
 $__split = function ($name, $params = []) {
@@ -67,7 +69,7 @@ if (isset($__slots)) unset($__slots);
             <a href="<?php echo e(route('about-us')); ?>" wire:navigate class="block py-2">About us</a>
             <a href="<?php echo e(route('contact')); ?>" wire:navigate class="block py-2">Contact us</a>
 
-            <a href="#" class="block py-2">Notices</a>
+            <a href="<?php echo e(route('notices')); ?>" wire:navigate class="block py-2">Notices</a>
             <a href="/admin" class="block py-2">Sign in</a>
             <a href="#" class="block py-2">Create an account</a>
         </div>

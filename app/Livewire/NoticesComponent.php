@@ -2,13 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Models\Event;
 use Livewire\Component;
 
-class ContactComponent extends Component
+class NoticesComponent extends Component
 {
     public function render()
     {
-        seo()->title('Contact us')
+        seo()->title('Notices')
             ->description('Garden of Eden Produce is a Rwandan company that organically grows and delivers a variety of fresh groceries, including many previously unavailable on the Rwandan market')
             ->keywords(
                 'online shopping in rwanda',
@@ -28,7 +29,7 @@ class ContactComponent extends Component
             ->twitterSite('@GardenofEdenPr')
             ->twitterCreator('@GardenofEdenPr')
             ->robots('index', 'follow');
-
-        return view('livewire.contact-component');
+        $notices = Event::select(['title', 'description'])->get();
+        return view('livewire.notices-component', ['notices' => $notices]);
     }
 }
