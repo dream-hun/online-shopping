@@ -66,26 +66,27 @@
                     @foreach ($order->orderItems as $orderItem)
                         <tr class="border-b">
                             <td class="py-2 px-4">{{ $orderItem->product->name }}</td>
-                            <td class="py-2 px-4 text-right">{{ number_format($orderItem->price) }}</td>
-                            <td class="py-2 px-4 text-right">{{ $orderItem->qty }}</td>
-                            <td class="py-2 px-4 text-right">{{ number_format($orderItem->sub_total) }}</td>
+                            <td class="py-2 px-4 text-right">{{ $orderItem->formattedPrice() }}</td>
+                            <td class="py-2 px-4 text-right">{{ $orderItem->quantity }}</td>
+                            <td class="py-2 px-4 text-right">{{ $orderItem->subtotal }}</td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr class="border-t">
                         <th colspan="3" class="py-2 px-4 text-right font-semibold">Sub Total</th>
-                        <th class="py-2 px-4 text-right">: {{ number_format($order->orderItems()->sum('sub_total')) }}
+                        <th class="py-2 px-4 text-right">:
+                            {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal')) }}
                             Rwf</th>
                     </tr>
                     <tr>
                         <th colspan="3" class="py-2 px-4 text-right font-semibold">Shipping</th>
-                        <th class="py-2 px-4 text-right">: {{ number_format($order->shipping_amount) }} Rwf</th>
+                        <th class="py-2 px-4 text-right">: {{ $setting->formattedShippingFee() }}</th>
                     </tr>
                     <tr class="bg-gray-200">
                         <th colspan="3" class="py-2 px-4 text-right font-semibold">Total</th>
                         <th class="py-2 px-4 text-right">:
-                            {{ number_format($order->orderItems()->sum('sub_total') + $order->shipping_amount) }} Rwf
+                            {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal') + $setting->shipping_fee) }}
                         </th>
                     </tr>
                 </tfoot>
