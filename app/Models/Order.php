@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DeliveryMethod;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,10 +16,15 @@ class Order extends Model
 
     public $table = 'orders';
 
+    protected $casts=[
+        'delivery_method'=>DeliveryMethod::class
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
+        
     ];
 
     public const PAYMENT_TYPE_SELECT = [
