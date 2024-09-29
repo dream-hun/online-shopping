@@ -30,6 +30,7 @@ class NoticesComponent extends Component
             ->twitterCreator('@GardenofEdenPr')
             ->robots('index', 'follow');
         $notices = Event::select(['title', 'description'])->get();
+
         return view('livewire.notices-component', ['notices' => $notices]);
     }
 }

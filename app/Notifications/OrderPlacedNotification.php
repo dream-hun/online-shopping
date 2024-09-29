@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewOrderNotification extends Notification
+class OrderPlacedNotification extends Notification
 {
     use Queueable;
 
@@ -37,13 +37,13 @@ class NewOrderNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New order Notification - Order'.$this->order->order_no)
-            ->greeting('Hello '.$notifiable->name.' ,')
-            ->line('A new order has been placed.')
+            ->subject('Your order is placed - Order '.$this->order->order_no)
+            ->greeting('Dear '.$notifiable->client_name.' ,')
+            ->line('Your order has been placed.')
             ->line('Order ID: '.$this->order->order_no)
-            ->line('Client: '.$this->order->client_name)
-            ->action('View order', url('/admin/orders/'.$this->order->id))
-            ->line('Thank you for using our application!')
+
+            ->action('shop again', url('/shop/'))
+            ->line('Thank you for shopping with us!')
             ->salutation('Best Regards')
             ->salutation('The '.config('app.name').' Team');
     }
@@ -55,6 +55,8 @@ class NewOrderNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 }

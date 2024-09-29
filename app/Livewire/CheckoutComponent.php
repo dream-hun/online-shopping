@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Enums\DeliveryMethod;
 use App\Helpers\Garden;
 use App\Livewire\Forms\CheckoutForm;
-use App\Mail\ClientOrderNotification;
+use App\Mail\OrderPlaced;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -58,7 +58,7 @@ class CheckoutComponent extends Component
             }
             $order->setOrderNo('ORD');
             DB::commit();
-            Mail::to($order->email)->send(new ClientOrderNotification($order));
+            Mail::to($order->email)->send(new OrderPlaced($order));
             $users = User::whereHas('roles', function ($query) {
                 return $query->where('title', 'Admin');
             })->get();
@@ -105,7 +105,7 @@ class CheckoutComponent extends Component
         seo()
             ->title('Checkout', 'Garden of Eden Produce Ltd')
             ->description('Complete your purchase and finalize your order at our secure checkout page.')
-            ->canonicalEnabled(true) 
+            ->canonicalEnabled(true)
             ->keywords('checkout, order, purchase, secure payment,garden of eden produce,Rwanda, kigali, online shopping groceries in kigali')
             ->images(
                 'https://mywebsite.com/images/blog-1/cover-image.webp',

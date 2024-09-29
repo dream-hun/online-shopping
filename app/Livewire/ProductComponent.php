@@ -64,7 +64,7 @@ class ProductComponent extends Component
 
         $this->dispatch('update-cart');
 
-        $this->alert('success', $this->product->name . ' is added to cart successfully!', [
+        $this->alert('success', $this->product->name.' is added to cart successfully!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
@@ -77,7 +77,7 @@ class ProductComponent extends Component
     {
         Cart::remove($this->product->id);
         $this->dispatch('update-cart');
-        $this->alert('error', $this->product->name . ' is removed from cart successfully!', [
+        $this->alert('error', $this->product->name.' is removed from cart successfully!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,

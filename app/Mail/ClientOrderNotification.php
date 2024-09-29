@@ -29,7 +29,7 @@ class ClientOrderNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Client Order Notification',
+            subject: 'Your Order Is Placed',
 
         );
     }
@@ -40,7 +40,7 @@ class ClientOrderNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            html: 'emails.client-email',
+            markdown: 'emails.client-notification',
         );
     }
 

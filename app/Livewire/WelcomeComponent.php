@@ -33,7 +33,6 @@ class WelcomeComponent extends Component
             ->twitterCreator('@GardenofEdenPr')
             ->robots('index', 'follow');
 
-
         return view('livewire.welcome-component');
     }
 }

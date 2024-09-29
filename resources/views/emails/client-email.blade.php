@@ -14,7 +14,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans antialiased">
     <div class="max-w-3xl mx-auto my-8 bg-white rounded-lg shadow-md overflow-hidden">
         <div class="bg-green-600 px-6 py-4">
             <h1 class="text-white text-2xl font-semibold">{{ config('app.name') }}</h1>
@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     @foreach ($order->orderItems as $orderItem)
-                        <tr class="border-b">
+                        <tr class="border-b border-black">
                             <td class="py-2 px-4">{{ $orderItem->product->name }}</td>
                             <td class="py-2 px-4 text-right">{{ $orderItem->formattedPrice() }}</td>
                             <td class="py-2 px-4 text-right">{{ $orderItem->quantity }}</td>
@@ -73,7 +73,7 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr class="border-t">
+                    <tr class="border-t border-black">
                         <th colspan="3" class="py-2 px-4 text-right font-semibold">Sub Total</th>
                         <th class="py-2 px-4 text-right">:
                             {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal')) }}
