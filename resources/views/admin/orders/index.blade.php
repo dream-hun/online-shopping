@@ -10,12 +10,6 @@
                 <table class=" table table-bordered table-striped table-hover datatable datatable-Order">
                     <thead>
                         <tr>
-                            <th width="10">
-
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.id') }}
-                            </th>
                             <th>
                                 {{ trans('cruds.order.fields.order_no') }}
                             </th>
@@ -25,17 +19,16 @@
                             <th>
                                 {{ trans('cruds.order.fields.client_phone') }}
                             </th>
-
-                            <th>
-                                {{ trans('cruds.order.fields.status') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.shipping_address') }}
-                            </th>
-
                             <th>
                                 {{ trans('cruds.order.fields.payment_type') }}
                             </th>
+                            <th>
+                                Deliverly Method
+                            </th>
+                            <th>
+                                {{ trans('cruds.order.fields.status') }}
+                            </th>
+
                             <th>
                                 &nbsp;
                             </th>
@@ -43,12 +36,7 @@
                     </thead>
                     <tbody>
                         @foreach ($orders as $key => $order)
-                            <tr data-entry-id="{{ $order->id }}">
-                                <td>
-                                </td>
-                                <td>
-                                    {{ $order->id ?? '' }}
-                                </td>
+                            <tr>
                                 <td>
                                     {{ $order->order_no ?? '' }}
                                 </td>
@@ -60,14 +48,15 @@
                                 </td>
 
                                 <td>
-                                    {{ App\Models\Order::STATUS_SELECT[$order->status] ?? '' }}
+                                    <span class="badge bg-info">
+                                        {{ $order->payment_type }}</span>
                                 </td>
                                 <td>
-                                    {{ $order->shipping_address ?? '' }}
+                                    {{ $order->delivery_method ?? '' }}
                                 </td>
 
                                 <td>
-                                    {{ App\Models\Order::PAYMENT_TYPE_SELECT[$order->payment_type] ?? '' }}
+                                    {{ $order->status ?? '' }}
                                 </td>
 
                                 <td>
@@ -90,28 +79,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
-    @parent
-    <script>
-        $(function() {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-
-            $.extend(true, $.fn.dataTable.defaults, {
-                orderCellsTop: true,
-                order: [
-                    [1, 'desc']
-                ],
-                pageLength: 100,
-            });
-            let table = $('.datatable-Order:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-
-        })
-    </script>
 @endsection

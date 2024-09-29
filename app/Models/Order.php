@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Order extends Model
 {
-    use HasFactory, Notifiable,SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes;
 
     public $table = 'orders';
 
@@ -31,6 +31,7 @@ class Order extends Model
         'pending' => 'Pending',
         'processing' => 'Processing',
         'shipped' => 'Shipped out',
+        'Paid' => 'Paid',
         'completed' => 'Completed',
         'cancelled' => 'Cancelled',
     ];
@@ -63,7 +64,7 @@ class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8)
     {
-        $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix . str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
         $this->update();
     }

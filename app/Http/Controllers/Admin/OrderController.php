@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\DeliveryMethod;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
@@ -15,8 +16,7 @@ class OrderController extends Controller
     {
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $orders = Order::with(['updated_by'])->get();
-
+        $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type'])->with(['updated_by', 'orderItems'])->paginate(10);
         return view('admin.orders.index', compact('orders'));
     }
 
