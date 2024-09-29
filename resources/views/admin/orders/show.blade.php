@@ -7,11 +7,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
-                    <p><strong>Order No:</strong> {{ $order->order_no }}</p>
-                    <p><strong>Client Name:</strong> {{ $order->client_name }}</p>
-                    <p><strong>Client Phone:</strong> {{ $order->client_phone }}</p>
-                    <p><strong>Client Phone:</strong> {{ $order->shipping_address }}</p>
-                    <p><strong>Client Phone:</strong> {{ $order->email }}</p>
+                    <p><strong>Order No</strong> {{ $order->order_no }}</p>
+                    <p><strong>Client Name</strong> {{ $order->client_name }}</p>
+                    <p><strong>Client Phone</strong> {{ $order->client_phone }}</p>
+                    <p><strong>Client Address</strong> {{ $order->shipping_address }}</p>
+                    <p><strong>Client Email</strong> {{ $order->email }}</p>
 
                 </div>
                 <div class="col-md-4 text-left">
