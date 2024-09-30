@@ -12,7 +12,7 @@
         "hashids/hashids": "^5.0",
         "honeystone/laravel-seo": "^1.4",
         "jantinnerezo/livewire-alert": "^3.0",
-        "laravel/framework": "^11.9",
+        "laravel/framework": "^11.25",
         "laravel/helpers": "^1.7",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",

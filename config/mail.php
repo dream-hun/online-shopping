@@ -113,7 +113,7 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
     'paths' => [
-        resource_path('views/mail/orders'),
+        resource_path('views/emails/'),
     ],
 
 ];

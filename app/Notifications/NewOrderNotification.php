@@ -39,7 +39,7 @@ class NewOrderNotification extends Notification
         return (new MailMessage)
             ->subject('New order Notification - Order'.$this->order->order_no)
             ->greeting('Hello '.$notifiable->name.' ,')
-            ->line('A new order has been placed.')
+            ->line('A new order has been placed with the folloeing details.')
             ->line('Order ID: '.$this->order->order_no)
             ->line('Client: '.$this->order->client_name)
             ->action('View order', url('/admin/orders/'.$this->order->id))
