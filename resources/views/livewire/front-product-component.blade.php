@@ -1,7 +1,7 @@
 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow" wire:key="{{ $product->id }}">
     <a href="/shop/products/{{ $product->slug }}" wire:navigate>
         @if ($product->image)
-            <img class="p-8 rounded-t-lg rounded-md" src="{{ $product->getFirstMediaUrl('image') }}"
+            <img class="p-8 rounded-t-lg rounded-md" src="{{ $product->getFirstMediaUrl('preview') }}"
                 alt="{{ $product->name }}" />
         @else
             <img class="p-8 rounded-t-lg" src="{{ asset('images/No-image.png') }}" alt="{{ $product->name }}" />

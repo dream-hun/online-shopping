@@ -41,7 +41,7 @@
                                 <a href="/shop/products/{{ $product->slug }}" wire:navigate>
                                     @if ($product->getFirstMediaUrl('image'))
                                         <img class="p-8 rounded-t-lg rounded-md"
-                                            src="{{ $product->getFirstMediaUrl('image') }}"
+                                            src="{{ $product->getFirstMediaUrl('preview') }}"
                                             alt="{{ $product->name }}" />
                                     @else
                                         <img class="p-8 rounded-t-lg" src="{{ asset('images/No-image.png') }}"
@@ -57,7 +57,7 @@
                                     <div class="flex items-center justify-between mt-4">
                                         <span class="text-md font-bold text-gray-900">
                                             <small>{{ $product->price }}</small>
-                                            / <small>{{ $product->measurement }}</small>
+                                            / <small> {{ $product->measurement }}</small>
                                         </span>
                                         @if ($product->inCart)
                                             <button wire:click="removeFromCart({{ $product->id }})"
