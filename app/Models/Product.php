@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ProductScope;
 use Cknow\Money\Money;
 use Cviebrock\EloquentSluggable\Sluggable;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +14,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+#[ScopedBy([ProductScope::class])]
 
 class Product extends Model implements HasMedia
 {
