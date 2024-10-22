@@ -39,9 +39,9 @@
                         @forelse($products as $product)
                             <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                                 <a href="/shop/products/{{ $product->slug }}" wire:navigate>
-                                    @if ($product->getFirstMediaUrl('image'))
+                                    @if ($product->image->getUrl('thumb'))
                                         <img class="p-8 rounded-t-lg rounded-md"
-                                            src="{{ $product->getFirstMediaUrl('preview') }}"
+                                            src="{{ $product->image->getUrl('preview') }}"
                                             alt="{{ $product->name }}" />
                                     @else
                                         <img class="p-8 rounded-t-lg" src="{{ asset('images/No-image.png') }}"
