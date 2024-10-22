@@ -20,7 +20,7 @@ class UpdateCategoryRequest extends FormRequest
                 'required',
             ],
             'image' => [
-                'required',
+                'image',
             ],
         ];
     }
