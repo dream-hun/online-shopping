@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Helpers\Garden;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -42,8 +41,8 @@ class OrderPlaced extends Mailable
         return new Content(
             markdown: 'mail.orders.placed',
             with: [
-                'name'=>$this->order->name,
-                'url'=>url('/order-confirmation/'.Garden::encryptId($this->order->id)),
+                'name' => $this->order->name,
+                'url' => url('/order-confirmation/'.Garden::encryptId($this->order->id)),
             ]
         );
     }

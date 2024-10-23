@@ -14,6 +14,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 #[ScopedBy([ProductScope::class])]
 
 class Product extends Model implements HasMedia

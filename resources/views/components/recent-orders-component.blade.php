@@ -46,7 +46,7 @@
                                 {{ $order->client_phone ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Order::STATUS_SELECT[$order->status] ?? '' }}
+                                {{ $order->status->getLabel() ?? '' }}
                             </td>
                             <td>
                                 {{ $order->shipping_address ?? '' }}

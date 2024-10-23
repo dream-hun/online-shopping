@@ -14,6 +14,7 @@ enum DeliveryMethod: string
             self::PICKUP => 'In-Store Pickup',
         };
     }
+
     public function color(): string
     {
         return match ($this) {

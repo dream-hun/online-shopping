@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\DeliveryMethod;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\OrderUpdateNotification;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,6 +17,7 @@ class OrderController extends Controller
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type'])->with(['updated_by', 'orderItems'])->paginate(10);
+
         return view('admin.orders.index', compact('orders'));
     }
 
@@ -24,16 +25,17 @@ class OrderController extends Controller
     {
         abort_if(Gate::denies('order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $updated_bies = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $order->load('updated_by');
 
-        return view('admin.orders.edit', compact('order', 'updated_bies'));
+        return view('admin.orders.edit', compact('order' ));
     }
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        $order->update($request->all());
+        $order->update(['status' => $request->status,'updated_by_id' => auth()->id()]);
+        User::all()->except($order->updated_by->id)->each(function (User $user) use($order) {
+            $user->notify(new OrderUpdateNotification($order));
+        });
 
         return redirect()->route('admin.orders.index');
     }

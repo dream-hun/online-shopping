@@ -52,7 +52,7 @@ class Category extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('thumb')->fit(Fit::Contain,200,200);
+        $this->addMediaConversion('thumb')->fit(Fit::Contain, 200, 200);
         $this->addMediaConversion('preview')->fit(Fit::Contain, 400, 400);
     }
 

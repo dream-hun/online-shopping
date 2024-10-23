@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\DeliveryMethod;
+use App\Enums\OrderStatus;
+use App\Notifications\OrderStatusNotification;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Notification;
 
 class Order extends Model
 {
@@ -16,30 +19,22 @@ class Order extends Model
 
     public $table = 'orders';
 
-    protected $casts=[
-        'delivery_method'=>DeliveryMethod::class
+    protected $casts = [
+        'delivery_method' => DeliveryMethod::class,
+        'status' => OrderStatus::class,
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
-        
+
     ];
 
     public const PAYMENT_TYPE_SELECT = [
         'cash_on_delivery' => 'Cash On Delivery',
         'mobile_money' => 'Mobile Money',
         'bank_transfer' => 'Bank Transfer',
-    ];
-
-    public const STATUS_SELECT = [
-        'pending' => 'Pending',
-        'processing' => 'Processing',
-        'shipped' => 'Shipped out',
-        'Paid' => 'Paid',
-        'completed' => 'Completed',
-        'cancelled' => 'Cancelled',
     ];
 
     protected $fillable = [
@@ -70,7 +65,7 @@ class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8)
     {
-        $orderNo = $prefix . str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
         $this->update();
     }
@@ -78,5 +73,17 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public static function booting()
+    {
+        self::updated(function (Order $order) {
+            // Retrieve enum cases as an array of values
+            $orderStatusValues = array_map(fn ($status) => $status->value, OrderStatus::cases());
+
+            if ($order->isDirty('status') && in_array($order->status->value, $orderStatusValues)) {
+                Notification::route('mail', $order->email)->notify(new OrderStatusNotification($order->status));
+            }
+        });
     }
 }

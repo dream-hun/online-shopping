@@ -54,7 +54,7 @@
 
                             </td>
                             <td>
-                                <?php echo e(App\Models\Order::STATUS_SELECT[$order->status] ?? ''); ?>
+                                <?php echo e($order->status->getLabel() ?? ''); ?>
 
                             </td>
                             <td>

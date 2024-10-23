@@ -13,6 +13,6 @@ class ProductScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('status','available');
+        $builder->where('status', 'available');
     }
 }
