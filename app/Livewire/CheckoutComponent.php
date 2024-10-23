@@ -5,8 +5,6 @@ namespace App\Livewire;
 use App\Enums\DeliveryMethod;
 use App\Helpers\Garden;
 use App\Livewire\Forms\CheckoutForm;
-use App\Mail\NewOrderPlaced;
-use App\Mail\Order\OrderPlaced as OrderOrderPlaced;
 use App\Mail\OrderPlaced;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -60,7 +58,7 @@ class CheckoutComponent extends Component
         }
         $order->setOrderNo('ORD');
         DB::commit();
-        Mail::to($order->email)->send(new OrderOrderPlaced($order));
+        Mail::to($order->email)->send(new OrderPlaced($order));
         $users = User::whereHas('roles', function ($query) {
             return $query->where('title', 'Admin');
         })->get();

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Mail\Order;
+namespace App\Mail;
 
 use App\Helpers\Garden;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -29,7 +30,7 @@ class OrderPlaced extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Placed',
+            subject: 'Your Order Is Placed',
         );
     }
 
@@ -39,10 +40,10 @@ class OrderPlaced extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.placed',
+            markdown: 'mail.orders.placed',
             with: [
-                'name' => $this->order->name,
-                'url' => url('/order-confirmation/' . Garden::encryptId($this->order->id))
+                'name'=>$this->order->name,
+                'url'=>url('/order-confirmation/'.Garden::encryptId($this->order->id)),
             ]
         );
     }
@@ -50,7 +51,7 @@ class OrderPlaced extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {
