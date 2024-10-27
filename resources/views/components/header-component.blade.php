@@ -56,7 +56,6 @@
 
             <a href="{{ route('notices') }}" wire:navigate class="block py-2">Notices</a>
             <a href="/admin" class="block py-2">Sign in</a>
-            <a href="#" class="block py-2">Create an account</a>
         </div>
     </div>
 </nav>
