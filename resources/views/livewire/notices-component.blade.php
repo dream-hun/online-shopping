@@ -12,8 +12,6 @@
                         </figure>
                     </div>
                 @endforeach
-
-
             </div>
         </div>
     </section>

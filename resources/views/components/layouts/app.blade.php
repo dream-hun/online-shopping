@@ -31,6 +31,21 @@
     </script>
     <!-- End Google Tag Manager -->
 
+    <style>
+        /* Optional: Custom checkbox focus style */
+        input[type="checkbox"]:focus {
+            outline: none;
+        }
+
+        /* Optional: Disable default checkbox styles in some browsers */
+        input[type="checkbox"]::-ms-check {
+            display: none;
+        }
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
 
 </head>
 

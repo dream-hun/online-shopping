@@ -15,7 +15,7 @@
                     affordable prices. With more than 40 years of organic farming experience,we specialize in
                     high
                     quality,great tasting produce.</p>
-                <a href="{{ route('shop') }}" wire:navigate
+                <a href="{{ route('shop') }}"
                     class="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900">Shop
                     Now</a>
             </div>
@@ -26,7 +26,7 @@
         <div class="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <div class="md:flex md:items-center md:justify-between">
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">Latest products</h2>
-                <a href="{{ route('shop') }}" wire:navigate
+                <a href="{{ route('shop') }}"
                     class="hidden text-sm font-medium text-green-600 hover:text-green-500 md:block">
                     Shop all products
                     <span aria-hidden="true"> →</span>

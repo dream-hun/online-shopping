@@ -25,7 +25,6 @@
     <style>
         body {
             font-family: 'Inter var' !important;
-            font-size: 18px !important;
         }
     </style>
 

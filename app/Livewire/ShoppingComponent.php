@@ -25,7 +25,7 @@ class ShoppingComponent extends Component
     #[Url()]
     public $sort = 'latest';
 
-    public function addToCart($productId)
+    public function addToCart($productId): void
     {
         $product = Product::findOrFail($productId);
         $item = Cart::add([
@@ -46,7 +46,7 @@ class ShoppingComponent extends Component
         ]);
     }
 
-    public function removeFromCart($productId)
+    public function removeFromCart($productId): void
     {
         $product = Product::findOrFail($productId);
         Cart::remove($productId);

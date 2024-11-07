@@ -36,6 +36,7 @@ class Product extends Model implements HasMedia
     public const STATUS_SELECT = [
         'available' => 'Available',
         'not-available' => 'Not Available',
+        'coming-soon'=>'Coming Soon'
     ];
 
     protected $fillable = [
