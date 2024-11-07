@@ -10,19 +10,10 @@
                             @forelse($categories as $category)
                                 <li class="mb-4"
                                     wire:key="{{ $category->id }}"
-                                    x-data="{
-        checked: false,
-        count: 20, // Replace with actual count
-        hover: false,
-        animate: false
-    }"
+                                    x-data="{ checked: false,count: {{ $category->products->count() }}, // Replace with actual count hover: false,animate: false}"
                                     x-init="checked = $wire.selected_categories.includes('{{ $category->id }}')">
 
-                                    <label for="{{ $category->slug }}"
-                                           @mouseenter="hover = true"
-                                           @mouseleave="hover = false"
-                                           :class="{ 'bg-gray-50': hover }"
-                                           class="group relative flex items-center p-2 cursor-pointer rounded-lg transition-all duration-200">
+                                    <label for="{{ $category->slug }}" @mouseenter="hover = true" @mouseleave="hover = false" :class="{ 'bg-gray-50': hover }" class="group relative flex items-center p-2 cursor-pointer rounded-lg transition-all duration-200">
 
                                         <div class="relative"
                                              @click="animate = true; setTimeout(() => animate = false, 500)">
@@ -31,21 +22,19 @@
                                                    id="{{ $category->slug }}"
                                                    value="{{ $category->id }}"
                                                    x-model="checked"
-                                                   class="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-md cursor-pointer
-                          checked:border-blue-500 checked:bg-blue-500
-                          transition-all duration-200
-                          focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                          dark:border-gray-600 dark:checked:border-blue-400 dark:checked:bg-blue-400">
-
-                                            <!-- Checkmark Icon with Animation -->
-                                            <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none
-                      text-white transition-all duration-200"
+                                                   class="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded-md cursor-pointer  checked:border-blue-500 checked:bg-blue-500
+                                                      transition-all duration-200
+                                                      focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                                                      dark:border-gray-600 dark:checked:border-blue-400 dark:checked:bg-blue-400">
+                                                    <!-- Checkmark Icon with Animation -->
+                                            <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-white transition-all duration-200"
                                                  :class="{
                      'opacity-0 scale-50': !checked,
                      'opacity-100 scale-100': checked,
                      'animate-bounce': animate
                  }"
                                                  fill="none"
+                                                 stroke="currentColor"
                                                  stroke="currentColor"
                                                  viewBox="0 0 24 24">
                                                 <path stroke-linecap="round"
