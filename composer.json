@@ -18,7 +18,8 @@
         "laravel/ui": "^4.5.2",
         "laraveldaily/laravel-charts": "^0.2.3",
         "livewire/livewire": "^3.5.12",
-        "spatie/laravel-medialibrary": "^11.9.2"
+        "spatie/laravel-medialibrary": "^11.9.2",
+        "spatie/laravel-sitemap": "^7.2.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23.1",
@@ -26,7 +27,7 @@
         "laravel/sail": "^1.37",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.5",
-        "phpunit/phpunit": "^11.4.2"
+        "phpunit/phpunit": "^11.4.3"
     },
     "autoload": {
         "psr-4": {

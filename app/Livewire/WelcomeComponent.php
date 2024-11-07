@@ -2,13 +2,16 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class WelcomeComponent extends Component
 {
     #[Title('Home - Garden of Eden Produce')]
-    public function render()
+    public function render(): Application|Factory|View|\Illuminate\View\View
     {
         seo()
             ->locale('en_GB')
