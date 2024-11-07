@@ -8,6 +8,7 @@ use App\Notifications\OrderStatusNotification;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -15,16 +16,19 @@ use Illuminate\Support\Facades\Notification;
 
 class Order extends Model
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use  Notifiable, SoftDeletes;
 
     public $table = 'orders';
 
     protected $casts = [
         'delivery_method' => DeliveryMethod::class,
         'status' => OrderStatus::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
     ];
 
-    protected $dates = [
+    protected array $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
@@ -53,17 +57,17 @@ class Order extends Model
         'deleted_at',
     ];
 
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function updated_by()
+    public function updated_by(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by_id');
     }
 
-    public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8)
+    public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8): void
     {
         $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
@@ -75,7 +79,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public static function booting()
+    public static function booting(): void
     {
         self::updated(function (Order $order) {
             // Retrieve enum cases as an array of values
