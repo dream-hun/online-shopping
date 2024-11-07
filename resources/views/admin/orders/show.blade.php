@@ -34,7 +34,7 @@
                 <tbody>
                     @foreach ($order->orderItems as $product)
                         <tr>
-                            <td>{{ $product->product->name }}</td>
+                            <td>{{ $product->name }}</td>
                             <td>{{ $product->quantity }}</td>
                             <td>{{ $product->formattedPrice() }}</td>
                             <td>{{ $product->formattedSubtotal() }}</td>
