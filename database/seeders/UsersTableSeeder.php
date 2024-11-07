@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $users = [
             [
@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
+                'email_verified_at' => now(),
                 'remember_token' => null,
             ],
         ];
