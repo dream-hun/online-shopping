@@ -16,7 +16,7 @@ class OrderController extends Controller
     {
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type'])
+        $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type','created_at'])
             ->with(['updated_by', 'orderItems'])
             ->orderBy('id', 'desc')
             ->paginate(10);

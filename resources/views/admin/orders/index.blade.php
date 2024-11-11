@@ -28,6 +28,9 @@
                             <th>
                                 {{ trans('cruds.order.fields.status') }}
                             </th>
+                            <th>
+                                Placed At
+                            </th>
 
                             <th>
                                 &nbsp;
@@ -57,6 +60,9 @@
 
                                 <td>
                                     {{ $order->status ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $order->created_at ?? '' }}
                                 </td>
 
                                 <td>
