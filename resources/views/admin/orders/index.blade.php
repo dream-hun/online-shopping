@@ -23,7 +23,7 @@
                                 {{ trans('cruds.order.fields.payment_type') }}
                             </th>
                             <th>
-                                Deliverly Method
+                                Delivery Method
                             </th>
                             <th>
                                 {{ trans('cruds.order.fields.status') }}
