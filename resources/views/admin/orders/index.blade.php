@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -10,47 +11,28 @@
                 <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-Order">
                     <thead>
                     <tr>
-                        <th width="10">
-
-                        </th>
-                            <th>
-                                {{ trans('cruds.order.fields.order_no') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.client_name') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.client_phone') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.payment_type') }}
-                            </th>
-                            <th>
-                                Delivery Method
-                            </th>
-                            <th>
-                                {{ trans('cruds.order.fields.status') }}
-                            </th>
-                            <th>
-                                Placed At
-                            </th>
-
-                            <th>
-                                &nbsp;
-                            </th>
-                        </tr>
+                        <th width="10"></th>
+                        <th>{{ trans('cruds.order.fields.order_no') }}</th>
+                        <th>{{ trans('cruds.order.fields.client_name') }}</th>
+                        <th>{{ trans('cruds.order.fields.client_phone') }}</th>
+                        <th>{{ trans('cruds.order.fields.payment_type') }}</th>
+                        <th>Delivery Method</th>
+                        <th>{{ trans('cruds.order.fields.status') }}</th>
+                        <th>Placed At</th>
+                        <th>&nbsp;</th>
+                    </tr>
                     </thead>
                 </table>
             </div>
         </div>
     </div>
-
 @endsection
+
 @section('scripts')
     @parent
     <script>
         $(function () {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
             @can('order_delete')
             let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
             let deleteButton = {
@@ -59,13 +41,12 @@
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
                     var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-                        return entry.id
+                        return entry.id;
                     });
 
                     if (ids.length === 0) {
-                        alert('{{ trans('global.datatables.zero_selected') }}')
-
-                        return
+                        alert('{{ trans('global.datatables.zero_selected') }}');
+                        return;
                     }
 
                     if (confirm('{{ trans('global.areYouSure') }}')) {
@@ -73,12 +54,13 @@
                             headers: {'x-csrf-token': _token},
                             method: 'POST',
                             url: config.url,
-                            data: { ids: ids, _method: 'DELETE' }})
-                            .done(function () { location.reload() })
+                            data: { ids: ids, _method: 'DELETE' }
+                        })
+                            .done(function () { location.reload() });
                     }
                 }
-            }
-            dtButtons.push(deleteButton)
+            };
+            dtButtons.push(deleteButton);
             @endcan
 
             let dtOverrideGlobals = {
@@ -92,11 +74,11 @@
                     { data: 'placeholder', name: 'placeholder' },
                     { data: 'order_no', name: 'order_no' },
                     { data: 'client_name', name: 'client_name' },
-                    {data: 'client_phone',name: 'client_phone'},
-                    {data: 'payment_type',name: 'payment_type'},
-                    {data: 'delivery_method',name: 'delivery_method'},
-                    {data: 'status',name: 'status'},
-                    {data: 'created_at',name: 'created_at'},
+                    { data: 'client_phone', name: 'client_phone' },
+                    { data: 'payment_type', name: 'payment_type' },
+                    { data: 'delivery_method', name: 'delivery_method' },
+                    { data: 'status', name: 'status' },
+                    { data: 'created_at', name: 'created_at' },
                     { data: 'actions', name: '{{ trans('global.actions') }}' }
                 ],
                 orderCellsTop: true,
@@ -105,11 +87,8 @@
             };
             let table = $('.datatable-Order').DataTable(dtOverrideGlobals);
             $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
             });
-
         });
-
     </script>
 @endsection
