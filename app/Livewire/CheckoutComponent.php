@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Notifications\NewOrderNotification;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -27,94 +28,124 @@ class CheckoutComponent extends Component
 
     public CheckoutForm $form;
 
+    public function mount()
+    {
+        if (Cart::isEmpty()) {
+            return redirect()->route('products');
+        }
+    }
+
     public function placeOrder()
     {
         $this->form->validate();
 
-        DB::beginTransaction();
-        // try {
-        $order = new Order;
-        $order->client_phone = $this->form->client_phone;
-        $order->email = $this->form->email;
-        $order->client_name = $this->form->client_name;
-        $order->shipping_address = $this->form->shipping_address;
-        $order->payment_type = $this->form->payment_type;
-        $order->delivery_method = $this->form->delivery_method;
-        $order->notes = $this->form->notes;
-        $order->status = 'Pending';
-        $order->save();
-
-        $cartItems = Cart::getContent();
-        foreach ($cartItems as $cartItem) {
-            $product = Product::find($cartItem->id);
-            if ($product) {
-                $orderItem = new OrderItem;
-                $orderItem->product_id = $product->id;
-                $orderItem->price = $cartItem->price;
-                $orderItem->quantity = $cartItem->quantity;
-                $orderItem->subtotal = $cartItem->price * $cartItem->quantity;
-                $order->orderItems()->save($orderItem);
-            }
+        if (Cart::isEmpty()) {
+            $this->alert('error', 'Your cart is empty!', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+            return;
         }
-        $order->setOrderNo('ORD');
-        DB::commit();
-        Mail::to($order->email)->send(new OrderPlaced($order));
-        $users = User::whereHas('roles', function ($query) {
-            return $query->where('title', 'Admin');
-        })->get();
-        Notification::send($users, new NewOrderNotification($order));
 
-        Cart::clear(); // Clear the cart after successful order placement
-        $this->dispatch('update-cart');
-        $this->alert('success', 'Your order is placed successfully!', [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+        DB::beginTransaction();
+        try {
+            // Create order
+            $order = Order::create([
+                'client_phone' => $this->form->client_phone,
+                'email' => $this->form->email,
+                'client_name' => $this->form->client_name,
+                'shipping_address' => $this->form->shipping_address,
+                'payment_type' => $this->form->payment_type,
+                'delivery_method' => $this->form->delivery_method,
+                'notes' => $this->form->notes,
+                'status' => 'Pending',
+                'total_amount' => Cart::getTotal()
+            ]);
 
-        $this->form->reset();
+            // Create order items
+            foreach (Cart::getContent() as $cartItem) {
+                $product = Product::find($cartItem->id);
+                if ($product) {
+                    $order->orderItems()->create([
+                        'product_id' => $product->id,
+                        'price' => $cartItem->price,
+                        'quantity' => $cartItem->quantity,
+                        'subtotal' => $cartItem->price * $cartItem->quantity
+                    ]);
+                }
+            }
 
-        return redirect()->route('order-success', ['id' => Garden::encryptId($order->id)]);
-        // } catch (\Exception $e) {
-        DB::rollBack();
-        $this->alert('error', 'An error occurred while placing your order. Please try again.', [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
-        // }
+            $order->setOrderNo('ORD');
+
+            // Send notifications
+            try {
+                Mail::to($order->email)->send(new OrderPlaced($order));
+                $admins = User::role('Admin')->get();
+                Notification::send($admins, new NewOrderNotification($order));
+            } catch (Exception $e) {
+                // Log notification error but don't roll back transaction
+                report($e);
+            }
+
+            DB::commit();
+
+            // Clear cart and reset form
+            Cart::clear();
+            $this->dispatch('update-cart');
+            $this->form->reset();
+
+            $this->alert('success', 'Your order has been placed successfully!', [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+
+            return redirect()->route('order-success', ['id' => Garden::encryptId($order->id)]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            report($e);  // Log the error
+
+            $message = 'An error occurred while placing your order. Please try again.';
+            if (app()->environment('local')) {
+                $message .= ' Error: ' . $e->getMessage();
+            }
+
+            $this->alert('error', $message, [
+                'position' => 'top-end',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        }
     }
 
     public function render(): View|Factory|Application
     {
         $cartItems = Cart::getContent();
         $cartItemsWithDetails = $cartItems->map(function ($item) {
-            $product = Product::find($item->id);
+            $product = Product::with('media')->find($item->id);
             if ($product) {
-                $imageUrl = $product->getFirstMediaUrl('image', 'thumb');
-
                 return array_merge($item->toArray(), [
-                    'image_url' => $imageUrl,
+                    'image_url' => $product->getFirstMediaUrl('image', 'thumb'),
                     'measurement' => $product->measurement,
                 ]);
             }
-
             return $item;
         });
+
         $deliveryMethods = DeliveryMethod::cases();
+
         seo()
-            ->title('Checkout', 'Garden of Eden Produce Ltd')
+            ->title('Checkout | Garden of Eden Produce Ltd')
             ->description('Complete your purchase and finalize your order at our secure checkout page.')
             ->canonicalEnabled(true)
-            ->keywords('checkout, order, purchase, secure payment,garden of eden produce,Rwanda, kigali, online shopping groceries in kigali')
-            ->images(
-                'https://mywebsite.com/images/blog-1/cover-image.webp',
-                'https://mywebsite.com/images/blog-1/another-image.webp',
-            );
+            ->keywords('checkout, order, purchase, secure payment, garden of eden produce, Rwanda, kigali, online shopping groceries in kigali');
 
         return view('livewire.checkout-component', [
             'cartItems' => $cartItemsWithDetails,
             'deliveryMethods' => $deliveryMethods,
+            'subtotal' => Cart::getSubTotal(),
+            'total' => Cart::getTotal()
         ]);
     }
 }

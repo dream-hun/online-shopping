@@ -16,7 +16,7 @@ class OrderController extends Controller
     {
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type','created_at'])
+        $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type', 'created_at'])
             ->with(['updated_by', 'orderItems'])
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -28,15 +28,13 @@ class OrderController extends Controller
     {
         abort_if(Gate::denies('order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-
-
-        return view('admin.orders.edit', compact('order' ));
+        return view('admin.orders.edit', compact('order'));
     }
 
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        $order->update(['status' => $request->status,'updated_by_id' => auth()->id()]);
-        User::all()->except($order->updated_by->id)->each(function (User $user) use($order) {
+        $order->update(['status' => $request->status, 'updated_by_id' => auth()->id()]);
+        User::all()->except($order->updated_by->id)->each(function (User $user) use ($order) {
             $user->notify(new OrderUpdateNotification($order));
         });
 
