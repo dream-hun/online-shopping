@@ -11,7 +11,7 @@ class NewOrderNotification extends Notification
 {
     use Queueable;
 
-    public $order;
+    public Order $order;
 
     /**
      * Create a new notification instance.
@@ -38,7 +38,7 @@ class NewOrderNotification extends Notification
     {
         return (new MailMessage)
             ->subject('New order Notification - Order'.$this->order->order_no)
-            ->greeting('Hello '.$notifiable->name.' ,')
+            ->greeting('Hello')
             ->line('A new order has been placed with the following details.')
             ->line('Order ID: '.$this->order->order_no)
             ->line('Client: '.$this->order->client_name)

@@ -26,9 +26,9 @@ class OrderController extends Controller
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'order_show';
-                $editGate      = 'order_edit';
-                $deleteGate    = 'order_delete';
+                $viewGate = 'order_show';
+                $editGate = 'order_edit';
+                $deleteGate = 'order_delete';
                 $crudRoutePart = 'orders';
 
                 return view('partials.datatablesActions', compact(

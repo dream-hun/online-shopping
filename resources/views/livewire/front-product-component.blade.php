@@ -1,5 +1,5 @@
 <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white" wire:key="{{ $product->id }}">
-    <a href="/shop/products/{{ $product->slug }}">
+
         <!-- Image section -->
         <div class="h-56 overflow-hidden relative">
 
@@ -55,5 +55,5 @@
                 {{ $added ? 'Remove from Basket' : 'Add to Cart' }}
             </button>
         </div>
-    </a>
+
 </div>

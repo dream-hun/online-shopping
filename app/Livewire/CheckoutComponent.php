@@ -7,7 +7,6 @@ use App\Helpers\Garden;
 use App\Livewire\Forms\CheckoutForm;
 use App\Mail\OrderPlaced;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\NewOrderNotification;
@@ -31,7 +30,7 @@ class CheckoutComponent extends Component
     public function mount()
     {
         if (Cart::isEmpty()) {
-            return redirect()->route('products');
+            return redirect()->route('shop');
         }
     }
 
@@ -45,12 +44,13 @@ class CheckoutComponent extends Component
                 'timer' => 3000,
                 'toast' => true,
             ]);
-            return;
+
+            return $this->redirect('checkout');
         }
 
-        DB::beginTransaction();
         try {
             // Create order
+            DB::beginTransaction();
             $order = Order::create([
                 'client_phone' => $this->form->client_phone,
                 'email' => $this->form->email,
@@ -60,7 +60,7 @@ class CheckoutComponent extends Component
                 'delivery_method' => $this->form->delivery_method,
                 'notes' => $this->form->notes,
                 'status' => 'Pending',
-                'total_amount' => Cart::getTotal()
+                'total_amount' => Cart::getTotal(),
             ]);
 
             // Create order items
@@ -71,7 +71,7 @@ class CheckoutComponent extends Component
                         'product_id' => $product->id,
                         'price' => $cartItem->price,
                         'quantity' => $cartItem->quantity,
-                        'subtotal' => $cartItem->price * $cartItem->quantity
+                        'subtotal' => $cartItem->price * $cartItem->quantity,
                     ]);
                 }
             }
@@ -81,8 +81,10 @@ class CheckoutComponent extends Component
             // Send notifications
             try {
                 Mail::to($order->email)->send(new OrderPlaced($order));
-                $admins = User::role('Admin')->get();
-                Notification::send($admins, new NewOrderNotification($order));
+                $users = User::whereHas('roles', function ($query) {
+                    return $query->where('title', 'Admin');
+                });
+                Notification::send($users, new NewOrderNotification($order));
             } catch (Exception $e) {
                 // Log notification error but don't roll back transaction
                 report($e);
@@ -108,7 +110,7 @@ class CheckoutComponent extends Component
 
             $message = 'An error occurred while placing your order. Please try again.';
             if (app()->environment('local')) {
-                $message .= ' Error: ' . $e->getMessage();
+                $message .= ' Error: '.$e->getMessage();
             }
 
             $this->alert('error', $message, [
@@ -130,6 +132,7 @@ class CheckoutComponent extends Component
                     'measurement' => $product->measurement,
                 ]);
             }
+
             return $item;
         });
 
@@ -145,7 +148,7 @@ class CheckoutComponent extends Component
             'cartItems' => $cartItemsWithDetails,
             'deliveryMethods' => $deliveryMethods,
             'subtotal' => Cart::getSubTotal(),
-            'total' => Cart::getTotal()
+            'total' => Cart::getTotal(),
         ]);
     }
 }
