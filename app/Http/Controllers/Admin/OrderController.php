@@ -18,8 +18,7 @@ class OrderController extends Controller
 
         $orders = Order::select(['id', 'order_no', 'client_name', 'client_phone', 'status', 'delivery_method', 'payment_type', 'created_at'])
             ->with(['updated_by', 'orderItems'])
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->get();
 
         return view('admin.orders.index', compact('orders'));
     }
