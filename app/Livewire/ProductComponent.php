@@ -38,13 +38,13 @@ class ProductComponent extends Component
 
     public function decreaseQuantity(): void
     {
-        if ($this->quantity > 0.5) {
+        if ($this->quantity > 1) {
             $this->quantity--;
         }
         $this->validateOnly('quantity');
     }
 
-    public function updatedQuantity()
+    public function updatedQuantity(): void
     {
         $this->validateOnly('quantity');
     }
