@@ -7,7 +7,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class=" table table-bordered table-striped table-hover datatable datatable-Order">
+                <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-Order">
                     <thead>
                     <tr>
                         <th width="10">
@@ -40,57 +40,11 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($orders as $key => $order)
-                            <tr data-entry-id="{{ $order->id }}">
-                                <td>
-
-                                </td>
-                                <td>
-                                    {{ $order->order_no ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $order->client_name ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $order->client_phone ?? '' }}
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-info">
-                                        {{ $order->payment_type }}</span>
-                                </td>
-                                <td>
-                                    {{ $order->delivery_method ?? '' }}
-                                </td>
-
-                                <td>
-                                    {{ $order->status ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $order->created_at ?? '' }}
-                                </td>
-
-                                <td>
-                                    @can('order_show')
-                                        <a class="btn btn-xs btn-primary" href="{{ route('admin.orders.show', $order->id) }}">
-                                            {{ trans('global.view') }}
-                                        </a>
-                                    @endcan
-
-                                    @can('order_edit')
-                                        <a class="btn btn-xs btn-info" href="{{ route('admin.orders.edit', $order->id) }}">
-                                            {{ trans('global.edit') }}
-                                        </a>
-                                    @endcan
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+
 @endsection
 @section('scripts')
     @parent
@@ -98,14 +52,14 @@
         $(function () {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
             @can('order_delete')
-            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
             let deleteButton = {
                 text: deleteButtonTrans,
                 url: "{{ route('admin.orders.massDestroy') }}",
                 className: 'btn-danger',
                 action: function (e, dt, node, config) {
-                    var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-                        return $(entry).data('entry-id')
+                    var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
+                        return entry.id
                     });
 
                     if (ids.length === 0) {
@@ -127,18 +81,35 @@
             dtButtons.push(deleteButton)
             @endcan
 
-            $.extend(true, $.fn.dataTable.defaults, {
+            let dtOverrideGlobals = {
+                buttons: dtButtons,
+                processing: true,
+                serverSide: true,
+                retrieve: true,
+                aaSorting: [],
+                ajax: "{{ route('admin.orders.index') }}",
+                columns: [
+                    { data: 'placeholder', name: 'placeholder' },
+                    { data: 'order_no', name: 'order_no' },
+                    { data: 'client_name', name: 'client_name' },
+                    {data: 'client_phone',name: 'client_phone'},
+                    {data: 'payment_type',name: 'payment_type'},
+                    {data: 'delivery_method',name: 'delivery_method'},
+                    {data: 'status',name: 'status'},
+                    {data: 'created_at',name: 'created_at'},
+                    { data: 'actions', name: '{{ trans('global.actions') }}' }
+                ],
                 orderCellsTop: true,
                 order: [[ 1, 'desc' ]],
                 pageLength: 100,
-            });
-            let table = $('.datatable-Order:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+            };
+            let table = $('.datatable-Order').DataTable(dtOverrideGlobals);
             $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
                 $($.fn.dataTable.tables(true)).DataTable()
                     .columns.adjust();
             });
 
-        })
+        });
 
     </script>
 @endsection
