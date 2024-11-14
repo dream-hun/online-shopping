@@ -166,6 +166,10 @@
                     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-3">
                         @forelse($products as $product)
                             <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white"
+                                 x-data="{ loading: false }"
+                                 x-init="
+         @this.on('update-cart', () => loading = false)
+     "
                                  wire:key="{{ $product->id }}">
                                 <!-- Image section -->
                                 <div class="h-56 overflow-hidden relative">
@@ -200,7 +204,6 @@
                                         {{ $product->name }}
                                     </h2>
 
-
                                     <!-- Price and rating row -->
                                     <div class="flex justify-between items-center mb-4">
                                         <div class="flex flex-col">
@@ -210,22 +213,34 @@
                                         </div>
                                     </div>
 
-                                    <!-- Action button -->
+                                    <!-- Action button with loader -->
                                     <button
+                                        x-on:click="loading = true"
+                                        x-bind:disabled="loading"
                                         wire:click="{{ $product->inCart ? 'removeFromCart('.$product->id.')' : 'addToCart('.$product->id.')' }}"
+                                        wire:loading.attr="disabled"
+                                        wire:loading.class="bg-gray-500"
                                         class="w-full py-2.5 px-4 rounded-lg transition-all duration-200 font-medium text-sm text-white focus:outline-none focus:ring-4 {{
-        $product->inCart
-            ? 'bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-800'
-            : 'bg-green-600 hover:bg-green-700 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-green-800'
-    }}"
+                $product->inCart
+                    ? 'bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-800'
+                    : 'bg-green-600 hover:bg-green-700 focus:ring-green-300 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-green-800'
+            }}"
                                     >
-                                        {{ $product->inCart ? 'Remove from Basket' : 'Add to Cart' }}
+                                        <span
+                                            x-show="!loading">{{ $product->inCart ? 'Remove from Basket' : 'Add to Cart' }}</span>
+                                        <span x-show="loading">
+                <svg class="animate-spin h-5 w-5 mx-auto text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C4.58 0 0 4.58 0 10h4z"></path>
+                </svg>
+            </span>
                                     </button>
                                 </div>
                             </div>
+
                         @empty
-                            <div class="flex w-full items-center p-4 mb-4 text-sm text-red-800 rounded-lg You have no products in the shopping
-                                    cart. bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            <div class="flex w-full items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                                  role="alert">
                                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
