@@ -80,14 +80,14 @@
                              class="w-full h-48 object-cover rounded-lg mb-4">
                     @endif
 
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
-                    
-                    <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
+                    <h3 class="text-lg py-4 font-semibold text-gray-900 mb-2 capitalize">{{ $relatedProduct->name }}</h3>
+
+                    <p class="text-md py-2 font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
                         / {{ $relatedProduct->measurement }}</p>
                 </a>
                 <button
                     wire:click="{{ $this->isInCart($relatedProduct->id) ? 'removeFromCart('.$relatedProduct->id.')' : 'addToCart('.$relatedProduct->id.')' }}"
-                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
+                    class="w-full py-4 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
                         ? 'bg-red-700 hover:bg-red-800'
                         : 'bg-green-700 hover:bg-green-800'
                     }} text-white"
