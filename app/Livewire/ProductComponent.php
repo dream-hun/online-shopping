@@ -17,15 +17,23 @@ class ProductComponent extends Component
     public $slug;
     public $quantity = 1;
     public $product;
+    public $relatedProducts;
+    public $cartItems = [];
 
     protected $rules = [
-        'quantity' => 'required|numeric|min:1', // Changed min value to 1
+        'quantity' => 'required|numeric|min:1',
     ];
 
     public function mount($slug): void
     {
         $this->slug = $slug;
         $this->product = Product::where('slug', $this->slug)->firstOrFail();
+        $this->updateCartItems();
+    }
+
+    private function updateCartItems(): void
+    {
+        $this->cartItems = collect(Cart::getContent())->pluck('id')->toArray();
     }
 
     public function increaseQuantity(): void
@@ -47,38 +55,51 @@ class ProductComponent extends Component
         $this->validateOnly('quantity');
     }
 
-    public function addToCart(): void
+    public function addToCart($productId = null): void
     {
         $this->validate();
 
+        $productToAdd = $productId ? Product::findOrFail($productId) : $this->product;
+
         Cart::add([
-            'id' => $this->product->id,
-            'name' => $this->product->name,
-            'quantity' => $this->quantity,
-            'price' => $this->product->price,
+            'id' => $productToAdd->id,
+            'name' => $productToAdd->name,
+            'quantity' => $productId ? 1 : $this->quantity,
+            'price' => $productToAdd->price,
         ])->associate(Product::class);
 
         $this->dispatch('update-cart');
+        $this->updateCartItems();
 
-        $this->alert('success', "{$this->product->name} has been added to cart successfully!", [
+        $this->alert('success', "{$productToAdd->name} has been added to cart successfully!", [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
         ]);
 
-        $this->quantity = 1; // Reset quantity after adding to cart
+        if (!$productId) {
+            $this->quantity = 1;
+        }
     }
 
-    public function removeFromCart(): void
+    public function removeFromCart($productId = null): void
     {
-        Cart::remove($this->product->id);
-        $this->dispatch('update-cart');
+        $productToRemove = $productId ? Product::findOrFail($productId) : $this->product;
 
-        $this->alert('error', "{$this->product->name} has been removed from cart successfully!", [
+        Cart::remove($productToRemove->id);
+        $this->dispatch('update-cart');
+        $this->updateCartItems();
+
+        $this->alert('error', "{$productToRemove->name} has been removed from cart successfully!", [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
         ]);
+    }
+
+    public function isInCart($productId): bool
+    {
+        return in_array($productId, $this->cartItems);
     }
 
     public function render(): View|Factory|Application
@@ -105,14 +126,15 @@ class ProductComponent extends Component
             ->twitterCreator('@GardenofEdenPr')
             ->robots('index', 'follow');
 
-        $inCart = Cart::get($this->product->id) !== null;
+        $inCart = $this->isInCart($this->product->id);
 
-        $relatedProducts = Product::where('category_id', $this->product->category_id)
+        $this->relatedProducts = Product::where('category_id', $this->product->category_id)
             ->where('id', '!=', $this->product->id)
-            ->limit(3)->get();
+            ->limit(3)
+            ->get();
 
         return view('livewire.product-component', [
-            'inCart' => $inCart,'relatedProducts' => $relatedProducts
+            'inCart' => $inCart
         ]);
     }
 }

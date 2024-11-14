@@ -31,14 +31,14 @@
                         </div>
                         <div class="w-32 mb-8">
                             <div class="relative flex flex-row w-full h-10 mt-6 bg-gray-200 rounded-lg">
-                                <button wire:click='decreaseQuantity'
+                                <button wire:click="decreaseQuantity"
                                         class="w-20 h-full text-black rounded-l outline-none cursor-pointer">
                                     <span class="m-auto text-2xl font-semibold">-</span>
                                 </button>
-                                <input type="number" wire:model='quantity' min="1"
+                                <input type="number" wire:model.live="quantity" min="1"
                                        class="flex items-center w-full font-semibold placeholder:bg-gray-200 text-center text-gray-900 outline-none focus:outline-none text-md hover:text-black"
                                        placeholder="1">
-                                <button wire:click='increaseQuantity'
+                                <button wire:click="increaseQuantity"
                                         class="w-20 h-full text-black rounded-r outline-none cursor-pointer">
                                     <span class="m-auto text-2xl font-semibold">+</span>
                                 </button>
@@ -46,17 +46,17 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-4">
                             @if ($inCart)
-                                <button wire:click='removeFromCart'
+                                <button wire:click="removeFromCart"
                                         class="w-full p-4 bg-red-600 rounded-md lg:w-2/5 dark:text-white text-white hover:bg-red-700">
-                                    <span wire:loading.remove wire:target='removeFromCart'>Remove from cart</span>
-                                    <span wire:loading wire:target='removeFromCart'
+                                    <span wire:loading.remove wire:target="removeFromCart">Remove from cart</span>
+                                    <span wire:loading wire:target="removeFromCart"
                                           aria-live="polite">Removing ...</span>
                                 </button>
                             @else
-                                <button wire:click='addToCart'
+                                <button wire:click="addToCart"
                                         class="w-full p-4 bg-green-800 rounded-md lg:w-2/5 dark:text-white text-white hover:bg-green-700">
-                                    <span wire:loading.remove wire:target='addToCart'>Add to cart</span>
-                                    <span wire:loading wire:target='addToCart' aria-live="polite">Adding ...</span>
+                                    <span wire:loading.remove wire:target="addToCart">Add to cart</span>
+                                    <span wire:loading wire:target="addToCart" aria-live="polite">Adding ...</span>
                                 </button>
                             @endif
                         </div>
@@ -67,43 +67,36 @@
     </section>
     <div class="md:flex md:items-center md:justify-between py-5">
         <h2 class="text-2xl font-bold tracking-tight text-gray-900">Related Products</h2>
-
     </div>
     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-3 mt-5">
-        @forelse($relatedProducts as $product)
+        @forelse($relatedProducts as $relatedProduct)
             <div class="bg-white rounded-lg shadow-lg p-4">
-                <a href="{{route('product',$product->slug)}}">
-
-                    @if($product->image)
-
-                        <img src="{{$product->getFirstMediaUrl('image')}}" alt="{{$product->name}}"
+                <a href="{{ route('product', $relatedProduct->slug) }}">
+                    @if($relatedProduct->image)
+                        <img src="{{ $relatedProduct->getFirstMediaUrl('image') }}" alt="{{ $relatedProduct->name }}"
                              class="w-full h-48 object-cover rounded-lg mb-4">
                     @else
-                        <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                        <img src="{{ asset('images/No-image.png') }}" alt="{{ $relatedProduct->name }}"
                              class="w-full h-48 object-cover rounded-lg mb-4">
-
                     @endif
 
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
-                    <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
-                    <p class="text-lg font-bold text-gray-900">{{ $product->formattedPrice() }}
-                        / {{ $product->measurement }}</p>
-
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                    <p class="text-gray-600 mb-4">{{ Str::limit($relatedProduct->description, 100) }}</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
+                        / {{ $relatedProduct->measurement }}</p>
                 </a>
-                <!-- Action button -->
                 <button
-                    wire:click="{{ $added ? 'remove' : 'addToCart' }}"
-                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $added
-                ? 'bg-red-700 hover:bg-red-800'
-                : 'bg-green-700 hover:bg-green-800'
-            }} text-white"
+                    wire:click="{{ $this->isInCart($relatedProduct->id) ? 'removeFromCart('.$relatedProduct->id.')' : 'addToCart('.$relatedProduct->id.')' }}"
+                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
+                        ? 'bg-red-700 hover:bg-red-800'
+                        : 'bg-green-700 hover:bg-green-800'
+                    }} text-white"
                 >
-                    {{ $added ? 'Remove from Basket' : 'Add to Cart' }}
+                    {{ $this->isInCart($relatedProduct->id) ? 'Remove from Cart' : 'Add to Cart' }}
                 </button>
             </div>
-
         @empty
-            <p class="text-lg"> No product found</p>
+            <p class="text-lg">No products found</p>
         @endforelse
     </div>
 </div>
