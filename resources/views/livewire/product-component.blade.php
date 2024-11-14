@@ -81,7 +81,7 @@
                     @endif
 
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
-                    <p class="text-gray-600 mb-4">{{ Str::limit($relatedProduct->description, 100) }}</p>
+                    
                     <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
                         / {{ $relatedProduct->measurement }}</p>
                 </a>
