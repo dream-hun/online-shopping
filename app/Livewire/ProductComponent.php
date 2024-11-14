@@ -107,8 +107,12 @@ class ProductComponent extends Component
 
         $inCart = Cart::get($this->product->id) !== null;
 
+        $relatedProducts = Product::where('category_id', $this->product->category_id)
+            ->where('id', '!=', $this->product->id)
+            ->limit(3)->get();
+
         return view('livewire.product-component', [
-            'inCart' => $inCart,
+            'inCart' => $inCart,'relatedProducts' => $relatedProducts
         ]);
     }
 }
