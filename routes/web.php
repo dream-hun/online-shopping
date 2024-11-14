@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RolesController;
@@ -16,7 +18,6 @@ use App\Livewire\CartComponent;
 use App\Livewire\CheckoutComponent;
 use App\Livewire\ContactComponent;
 use App\Livewire\NoticesComponent;
-use App\Livewire\ProductComponent;
 use App\Livewire\ShoppingComponent;
 use App\Livewire\WelcomeComponent;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,7 @@ Route::get('/home', function () {
 Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
-    Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     // Permissions
     Route::delete('permissions/destroy', [PermissionsController::class, 'massDestroy'])->name('permissions.massDestroy');
     Route::resource('permissions', PermissionsController::class);
@@ -85,7 +86,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('settings', SettingController::class);
 
     // Order
-    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class, ['except' => ['create', 'store', 'destroy']]);
+    Route::resource('orders', OrderController::class, ['except' => ['create', 'store', 'destroy']]);
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

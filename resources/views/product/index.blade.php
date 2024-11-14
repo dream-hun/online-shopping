@@ -104,8 +104,16 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach($relatedProducts as $relatedProduct)
             <div class="bg-white rounded-lg shadow-lg p-4">
-                <img src="https://via.placeholder.com/200" alt="Related Product 1"
-                     class="w-full h-48 object-cover rounded-lg mb-4">
+                @if($product->image)
+
+                    <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
+                         class="w-full h-48 object-cover rounded-lg mb-4">
+                @else
+                    <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                         class="w-full h-48 object-cover rounded-lg mb-4">
+
+                @endif
+
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
                 <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
                 <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
