@@ -22,7 +22,7 @@
             });
             var f = d.getElementsByTagName(s)[0],
                 j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
+                dl = l !== 'dataLayer' ? '&l=' + l : '';
             j.async = true;
             j.src =
                 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
@@ -103,8 +103,9 @@
     <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach($relatedProducts as $relatedProduct)
-            <a href="{{route('product',$relatedProduct->slug)}}">
-                <div class="bg-white rounded-lg shadow-lg p-4">
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <a href="{{route('product',$relatedProduct->slug)}}">
+
                     @if($product->image)
 
                         <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
@@ -119,8 +120,20 @@
                     <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
                     <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
                         / {{ $relatedProduct->measurement }}</p>
-                </div>
-            </a>
+
+                </a>
+                <!-- Action button -->
+                <button
+                    wire:click="{{ $added ? 'remove' : 'addToCart' }}"
+                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $added
+                ? 'bg-red-700 hover:bg-red-800'
+                : 'bg-green-700 hover:bg-green-800'
+            }} text-white"
+                >
+                    {{ $added ? 'Remove from Basket' : 'Add to Cart' }}
+                </button>
+            </div>
+
         @endforeach
     </div>
 </div>
