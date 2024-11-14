@@ -72,11 +72,11 @@
     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-3 mt-5">
         @forelse($relatedProducts as $product)
             <div class="bg-white rounded-lg shadow-lg p-4">
-                <a href="{{route('product',$relatedProduct->slug)}}">
+                <a href="{{route('product',$product->slug)}}">
 
                     @if($product->image)
 
-                        <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
+                        <img src="{{$product->getFirstMediaUrl('image')}}" alt="{{$product->name}}"
                              class="w-full h-48 object-cover rounded-lg mb-4">
                     @else
                         <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
@@ -84,10 +84,10 @@
 
                     @endif
 
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
                     <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
-                    <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
-                        / {{ $relatedProduct->measurement }}</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $product->formattedPrice() }}
+                        / {{ $product->measurement }}</p>
 
                 </a>
                 <!-- Action button -->
