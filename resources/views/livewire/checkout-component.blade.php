@@ -151,8 +151,8 @@
                 <!-- End Card -->
             </div>
             <div class="md:col-span-12 lg:col-span-4 col-span-12">
-                <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
-                    <div class="text-xl font-bold text-gray-700 dark:text-white mb-2">
+                <div class="bg-white rounded-xl shadow p-4 sm:p-7">
+                    <div class="text-xl font-bold text-gray-700 mb-2">
                         ORDER SUMMARY
                     </div>
                     <div class="flex justify-between mb-2 font-bold">
