@@ -87,7 +87,7 @@
                 </a>
                 <button
                     wire:click="{{ $this->isInCart($relatedProduct->id) ? 'removeFromCart('.$relatedProduct->id.')' : 'addToCart('.$relatedProduct->id.')' }}"
-                    class="w-full py-4 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
+                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
                         ? 'bg-red-700 hover:bg-red-800'
                         : 'bg-green-700 hover:bg-green-800'
                     }} text-white"
