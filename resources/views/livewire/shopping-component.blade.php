@@ -167,7 +167,7 @@
                                  wire:key="{{ $product->id }}">
                                 <!-- Image section -->
                                 <div class="h-56 overflow-hidden relative">
-                                    <a href="/shop/products/{{ $product->slug }}" wire:navigate>
+                                    <a href="/shop/products/{{ $product->slug }}">
                                         @if ($product->image)
                                             <img
                                                 class="w-full h-full object-cover px-3"

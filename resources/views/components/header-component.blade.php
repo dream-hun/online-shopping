@@ -32,15 +32,15 @@
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="{{ route('landing') }}" wire:navigate
+                    <a href="{{ route('landing') }}"
                         class="hover:text-green-700 hover:font-semibold">Home</a>
-                    <a href="{{ route('shop') }}" wire:navigate
+                    <a href="{{ route('shop') }}"
                         class="hover:text-green-700 hover:font-semibold">Shop</a>
-                    <a href="{{ route('about-us') }}" wire:navigate
+                    <a href="{{ route('about-us') }}"
                         class="hover:text-green-700 hover:font-semibold">About us</a>
-                    <a href="{{ route('notices') }}" wire:navigate
+                    <a href="{{ route('notices') }}"
                         class="hover:text-green-700 hover:font-semibold">Notices</a>
-                    <a href="{{ route('contact') }}" wire:navigate
+                    <a href="{{ route('contact') }}"
                         class="hover:text-green-700 hover:font-semibold">Contact us</a>
                 </div>
                 <livewire:cart-counter-component />
@@ -49,12 +49,12 @@
     </div>
     <div x-show="mobileMenuOpen" class="md:hidden bg-white border-t">
         <div class="container mx-auto px-4 py-2">
-            <a href="{{ route('landing') }}" wire:navigate class="block py-2">Home</a>
-            <a href="{{ route('shop') }}" wire:navigate class="block py-2">Shop</a>
-            <a href="{{ route('about-us') }}" wire:navigate class="block py-2">About us</a>
-            <a href="{{ route('contact') }}" wire:navigate class="block py-2">Contact us</a>
+            <a href="{{ route('landing') }}" class="block py-2">Home</a>
+            <a href="{{ route('shop') }}" class="block py-2">Shop</a>
+            <a href="{{ route('about-us') }}" class="block py-2">About us</a>
+            <a href="{{ route('contact') }}" class="block py-2">Contact us</a>
 
-            <a href="{{ route('notices') }}" wire:navigate class="block py-2">Notices</a>
+            <a href="{{ route('notices') }}" class="block py-2">Notices</a>
             <a href="/admin" class="block py-2">Sign in</a>
         </div>
     </div>
