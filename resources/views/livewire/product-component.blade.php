@@ -65,5 +65,45 @@
             </div>
         </div>
     </section>
+    <div class="md:flex md:items-center md:justify-between py-5">
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Related Products</h2>
 
+    </div>
+    <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-3 mt-5">
+        @forelse($relatedProducts as $product)
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <a href="{{route('product',$relatedProduct->slug)}}">
+
+                    @if($product->image)
+
+                        <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
+                             class="w-full h-48 object-cover rounded-lg mb-4">
+                    @else
+                        <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                             class="w-full h-48 object-cover rounded-lg mb-4">
+
+                    @endif
+
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                    <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
+                        / {{ $relatedProduct->measurement }}</p>
+
+                </a>
+                <!-- Action button -->
+                <button
+                    wire:click="{{ $added ? 'remove' : 'addToCart' }}"
+                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $added
+                ? 'bg-red-700 hover:bg-red-800'
+                : 'bg-green-700 hover:bg-green-800'
+            }} text-white"
+                >
+                    {{ $added ? 'Remove from Basket' : 'Add to Cart' }}
+                </button>
+            </div>
+
+        @empty
+            <p class="text-lg"> No product found</p>
+        @endforelse
+    </div>
 </div>

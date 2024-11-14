@@ -4,6 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -15,12 +18,12 @@ class FrontProductComponent extends Component
 
     public $quantity = 1;
 
-    public function mount(Product $product)
+    public function mount(Product $product): void
     {
         $this->product = $product;
     }
 
-    public function addToCart()
+    public function addToCart(): void
     {
 
         $item = Cart::add([
@@ -41,7 +44,7 @@ class FrontProductComponent extends Component
         ]);
     }
 
-    public function remove()
+    public function remove(): void
     {
         Cart::remove($this->product->id);
         $this->dispatch('update-cart');
@@ -52,9 +55,9 @@ class FrontProductComponent extends Component
         ]);
     }
 
-    public function render()
+    public function render(): Application|Factory|View|\Illuminate\View\View
     {
-        $latestProducts = Product::latest()->take(8)->get();
+        $latestProducts = Product::latest()->take(9)->get();
 
         return view('livewire.front-product-component', [
             'products' => $latestProducts,
