@@ -53,31 +53,28 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Product Image -->
             <div class="relative">
-                <img src="https://via.placeholder.com/500" alt="Product Image" class="w-full h-auto rounded-lg">
+                @if($product->image)
+                    <img src="{{ $product->getFirstMediaUrl('image') }}" alt="{{$product->name}}"
+                         class="w-full h-auto rounded-lg">
+                @else
+                    <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                         class="w-full h-auto rounded-lg">
+
+                @endif
             </div>
 
             <!-- Product Details -->
             <div class="flex flex-col">
-                <h1 class="text-3xl font-bold text-gray-900 mb-4">Premium Coffee Maker</h1>
-                <div class="text-2xl font-semibold text-gray-900 mb-4">$299.99</div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">{{$product->name}}</h1>
+                <div class="text-2xl font-semibold text-gray-900 mb-4">{{$product->formattedPrice()}}
+                    / {{ $product->measurement }}</div>
 
-                <!-- Measurements -->
-                <div class="mb-4">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-2">Measurements</h2>
-                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                        <div>Height: 15 inches</div>
-                        <div>Width: 10 inches</div>
-                        <div>Depth: 8 inches</div>
-                        <div>Weight: 5 lbs</div>
-                    </div>
-                </div>
 
                 <!-- Description -->
                 <div class="mb-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-2">Description</h2>
                     <p class="text-gray-600">
-                        Premium coffee maker with advanced brewing technology. Features programmable settings,
-                        temperature control, and a built-in grinder. Makes up to 12 cups of perfect coffee.
+                        {!! Str::markdown($product->description)!!}
                     </p>
                 </div>
 
@@ -105,41 +102,16 @@
     <!-- Related Products -->
     <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- Related Product 1 -->
-        <div class="bg-white rounded-lg shadow-lg p-4">
-            <img src="https://via.placeholder.com/200" alt="Related Product 1"
-                 class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Coffee Grinder</h3>
-            <p class="text-gray-600 mb-4">Professional grade coffee grinder</p>
-            <p class="text-lg font-bold text-gray-900">$49.99</p>
-        </div>
-
-        <!-- Related Product 2 -->
-        <div class="bg-white rounded-lg shadow-lg p-4">
-            <img src="https://via.placeholder.com/200" alt="Related Product 2"
-                 class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Coffee Filters</h3>
-            <p class="text-gray-600 mb-4">Pack of 100 premium filters</p>
-            <p class="text-lg font-bold text-gray-900">$9.99</p>
-        </div>
-
-        <!-- Related Product 3 -->
-        <div class="bg-white rounded-lg shadow-lg p-4">
-            <img src="https://via.placeholder.com/200" alt="Related Product 3"
-                 class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Coffee Beans</h3>
-            <p class="text-gray-600 mb-4">Organic arabica coffee beans</p>
-            <p class="text-lg font-bold text-gray-900">$24.99</p>
-        </div>
-
-        <!-- Related Product 4 -->
-        <div class="bg-white rounded-lg shadow-lg p-4">
-            <img src="https://via.placeholder.com/200" alt="Related Product 4"
-                 class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Travel Mug</h3>
-            <p class="text-gray-600 mb-4">Insulated stainless steel mug</p>
-            <p class="text-lg font-bold text-gray-900">$19.99</p>
-        </div>
+        @foreach($relatedProducts as $relatedProduct)
+            <div class="bg-white rounded-lg shadow-lg p-4">
+                <img src="https://via.placeholder.com/200" alt="Related Product 1"
+                     class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
+                <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
+                    / {{ $relatedProduct->measurement }}</p>
+            </div>
+        @endforeach
     </div>
 </div>
 <x-footer-component/>

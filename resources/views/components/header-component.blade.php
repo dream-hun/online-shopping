@@ -17,7 +17,6 @@
                 </div>
                 <div class="mt-2 sm:mt-0 flex space-x-4">
                     <a href="{{ route('login') }}" class="text-md font-semibold">Sign in</a>
-                    <a href="#" class="text-md font-semibold">Create an account</a>
                 </div>
             </div>
         </div>

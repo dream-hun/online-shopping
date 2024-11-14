@@ -27,11 +27,11 @@ Route::get('/about-us', AboutComponent::class)->name('about-us');
 Route::get('/contact-us', ContactComponent::class)->name('contact');
 Route::get('/shopping-cart', CartComponent::class)->name('cart');
 Route::get('/shop', ShoppingComponent::class)->name('shop');
-Route::get('/shop/products/{slug}', ProductComponent::class)->name('product');
+Route::get('/shop/products/{slug}', ProductShowController::class)->name('product');
 Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/order-confirmation/{id}', SuccessfulOrderController::class)->name('order-success');
 Route::get('/notice-board', NoticesComponent::class)->name('notices');
-Route::get('/shop/product/{slug}', ProductShowController::class)->name('product-show');
+
 
 //Route to subscribe to newsletter
 Route::post('/subscribe', NewsletterController::class)->name('subscribe');
