@@ -103,22 +103,24 @@
     <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Products</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach($relatedProducts as $relatedProduct)
-            <div class="bg-white rounded-lg shadow-lg p-4">
-                @if($product->image)
+            <a href="{{route('product',$relatedProduct->slug)}}">
+                <div class="bg-white rounded-lg shadow-lg p-4">
+                    @if($product->image)
 
-                    <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
-                         class="w-full h-48 object-cover rounded-lg mb-4">
-                @else
-                    <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
-                         class="w-full h-48 object-cover rounded-lg mb-4">
+                        <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
+                             class="w-full h-48 object-cover rounded-lg mb-4">
+                    @else
+                        <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                             class="w-full h-48 object-cover rounded-lg mb-4">
 
-                @endif
+                    @endif
 
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
-                <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
-                <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
-                    / {{ $relatedProduct->measurement }}</p>
-            </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
+                    <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
+                        / {{ $relatedProduct->measurement }}</p>
+                </div>
+            </a>
         @endforeach
     </div>
 </div>
