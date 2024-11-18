@@ -1,70 +1,86 @@
 <nav x-data="{ mobileMenuOpen: false, currencyDropdownOpen: false }" class="sticky top-0 z-50 shadow-md">
+    <!-- Top Bar - Hidden on Mobile -->
     <div class="hidden sm:block bg-green-800 text-white">
         <div class="container mx-auto px-4">
             <div class="flex flex-col sm:flex-row justify-between items-center py-2">
-                <div class="flex flex-wrap justify-center sm:justify-start">
-                    <a href="tel:{{ $setting->mobile_one }}"
-                       class="font-semibold px-2 py-1 text-md">{{ App\Helpers\Garden::formatPhoneUs($setting->mobile_one) }}</a>
-                    <a href="tel:{{ $setting->mobile_two }}"
-                       class="font-semibold px-2 py-1 text-md">{{ App\Helpers\Garden::formatPhoneUs($setting->mobile_two) }}</a>
-                    <a href="tel:{{ $setting->whatsapp }}"
-                       class="font-semibold px-2 py-1 text-md">{{ App\Helpers\Garden::formatPhoneUs($setting->whatsapp) }}</a>
-                    <a href="mailto:{{ $setting->email_one }}"
-                       class="font-semibold px-2 py-1 text-md">{{ $setting->email_one }}</a>
-                    <a href="mailto:{{ $setting->email_two }}"
-                       class="font-semibold px-2 py-1 text-md">{{ $setting->email_two }}</a>
-                    <a href="#" class="font-semibold px-2 py-1 text-md">{{ $setting->address }}</a>
+                <!-- Contact Information -->
+                <div class="flex flex-wrap justify-center gap-2">
+                    <a href="tel:{{ $setting->mobile_one }}" class="text-sm hover:text-green-200">{{ App\Helpers\Garden::formatPhoneUs($setting->mobile_one) }}</a>
+                    <a href="tel:{{ $setting->mobile_two }}" class="text-sm hover:text-green-200">{{ App\Helpers\Garden::formatPhoneUs($setting->mobile_two) }}</a>
+                    <a href="tel:{{ $setting->whatsapp }}" class="text-sm hover:text-green-200">{{ App\Helpers\Garden::formatPhoneUs($setting->whatsapp) }}</a>
+                    <a href="mailto:{{ $setting->email_one }}" class="text-sm hover:text-green-200">{{ $setting->email_one }}</a>
+                    <a href="mailto:{{ $setting->email_two }}" class="text-sm hover:text-green-200">{{ $setting->email_two }}</a>
+                    <span class="text-sm">{{ $setting->address }}</span>
                 </div>
-                <div class="mt-2 sm:mt-0 flex space-x-4">
-                    <a href="{{ route('login') }}" class="text-md font-semibold">Sign in</a>
+                <!-- Sign In Link -->
+                <div class="mt-2 sm:mt-0">
+                    <a href="{{ route('login') }}" class="text-sm hover:text-green-200">Sign in</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Main Header -->
     <header class="bg-white text-black py-4">
-        <!-- Centered Navigation Container -->
-        <div
-            class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <!-- Logo and Links -->
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div class="shrink-0 flex items-center">
+        <div class="container mx-auto px-4">
+            <!-- Desktop Layout -->
+            <div class="hidden md:grid md:grid-cols-3 items-center">
+                <!-- Logo - Left -->
+                <div class="flex items-center">
                     <a href="{{ route('landing') }}">
-                        <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}"
-                             class="block h-14 w-auto">
+                        <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="h-14 w-auto">
                     </a>
                 </div>
 
-                <!-- Navigation Links (hidden on small screens) -->
-                <div class="flex justify-between items-center">
-                    <nav class="hidden md:flex space-x-6 items-center">
-                        <a href="{{route('landing')}}" class="hover:text-green-700 hover:font-semibold">Home</a>
-                        <a href="{{ route('shop') }}" class="hover:text-green-700 hover:font-semibold">Shop</a>
-                        <a href="{{ route('about-us') }}" class="hover:text-green-700 hover:font-semibold">About us</a>
-                        <a href="{{ route('contact') }}" class="hover:text-green-700 hover:font-semibold">Contact
-                            us</a>
-                        <a href="{{ route('notices') }}" class="hover:text-green-700 hover:font-semibold">Notices</a>
-                    </nav>
+                <!-- Navigation - Center -->
+                <nav class="flex justify-center">
+                    <div class="flex space-x-8">
+                        <a href="{{route('landing')}}" class="text-lg hover:text-green-700 hover:font-semibold transition-colors">Home</a>
+                        <a href="{{ route('shop') }}" class="text-lg hover:text-green-700 hover:font-semibold transition-colors">Shop</a>
+                        <a href="{{ route('about-us') }}" class="text-lg hover:text-green-700 hover:font-semibold transition-colors">About us</a>
+                        <a href="{{ route('contact') }}" class="text-lg hover:text-green-700 hover:font-semibold transition-colors">Contact us</a>
+                        <a href="{{ route('notices') }}" class="text-lg hover:text-green-700 hover:font-semibold transition-colors">Notices</a>
+                    </div>
+                </nav>
+
+                <!-- Search and Cart - Right -->
+                <div class="flex justify-end items-center space-x-4">
+                    <livewire:search-component/>
+                    <livewire:cart-counter-component/>
                 </div>
             </div>
 
-            <!-- Search and Login -->
-            <div class="flex items-center space-x-4 w-full md:w-auto">
-                <!-- Search Input with Alpine.js Dropdown -->
-                <livewire:search-component/>
-                <!-- Shopping cart Component -->
-                <livewire:cart-counter-component/>
-            </div>
+            <!-- Mobile Layout -->
+            <div class="md:hidden">
+                <div class="flex justify-between items-center">
+                    <!-- Logo -->
+                    <a href="{{ route('landing') }}">
+                        <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="h-10 w-auto">
+                    </a>
 
-            <!-- Mobile Navigation Links (visible on small screens) -->
-            <nav x-show="mobileMenuOpen" class="flex md:hidden space-x-6 mt-4">
-                <a href="{{route('landing')}}" class="hover:text-green-700 hover:font-semibold">Home</a>
-                <a href="{{ route('shop') }}" class="hover:text-green-700 hover:font-semibold">Shop</a>
-                <a href="{{ route('about-us') }}" class="hover:text-green-700 hover:font-semibold">About us</a>
-                <a href="{{ route('contact') }}" class="hover:text-green-700 hover:font-semibold">Contact us</a>
-                <a href="{{ route('notices') }}" class="hover:text-green-700 hover:font-semibold">Notices</a>
-            </nav>
+                    <!-- Search, Cart, and Menu Button -->
+                    <div class="flex items-center space-x-4">
+                        <livewire:search-component/>
+                        <livewire:cart-counter-component/>
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div x-show="mobileMenuOpen" class="mt-4" x-transition>
+                    <nav class="flex flex-col space-y-4">
+                        <a href="{{route('landing')}}" class="py-2 hover:text-green-700 hover:font-semibold">Home</a>
+                        <a href="{{ route('shop') }}" class="py-2 hover:text-green-700 hover:font-semibold">Shop</a>
+                        <a href="{{ route('about-us') }}" class="py-2 hover:text-green-700 hover:font-semibold">About us</a>
+                        <a href="{{ route('contact') }}" class="py-2 hover:text-green-700 hover:font-semibold">Contact us</a>
+                        <a href="{{ route('notices') }}" class="py-2 hover:text-green-700 hover:font-semibold">Notices</a>
+                    </nav>
+                </div>
+            </div>
         </div>
     </header>
-
 </nav>
