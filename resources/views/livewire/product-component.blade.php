@@ -36,7 +36,7 @@
                                     <span class="m-auto text-2xl font-semibold">-</span>
                                 </button>
                                 <input type="number" wire:model.live="quantity" min="1"
-                                       class="flex items-center w-full font-semibold placeholder:bg-gray-200 text-center text-gray-900 outline-none focus:outline-none text-md hover:text-black"
+                                       class="flex items-center w-full font-semibold placeholder:bg-gray-200 border focus-ring text-center text-gray-900 outline-none focus:outline-none text-md hover:text-black"
                                        placeholder="1">
                                 <button wire:click="increaseQuantity"
                                         class="w-20 h-full text-black rounded-r outline-none cursor-pointer">

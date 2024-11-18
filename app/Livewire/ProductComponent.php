@@ -25,7 +25,7 @@ class ProductComponent extends Component
     public $cartItems = [];
 
     protected $rules = [
-        'quantity' => 'required|numeric|min:1',
+        'quantity' => 'required|numeric|min:0.5',
     ];
 
     public function mount($slug): void

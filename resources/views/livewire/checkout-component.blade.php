@@ -63,7 +63,7 @@
                             notes
                             on the order</label>
                         <textarea wire:model.blur="form.notes" id="notes" rows="4"
-                                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                                  class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-green-500 focus:border-green-500"
                                   placeholder="Write your thoughts here..."></textarea>
                         @error('form.notes')
                         <span class="text-red-500">{{ $message }}</span>
