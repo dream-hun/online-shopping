@@ -96,4 +96,20 @@ class Product extends Model implements HasMedia
             ],
         ];
     }
+
+    public static function scopeSearch($query, ?string $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $search = "%{$search}%";
+
+            return $query->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', $search)
+                    ->orWhere('description', 'LIKE', $search)
+                    ->orWhere('measurement', 'LIKE', $search)
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', $search);
+                    });
+            });
+        });
+    }
 }

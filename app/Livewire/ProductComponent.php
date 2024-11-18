@@ -15,9 +15,13 @@ class ProductComponent extends Component
     use LivewireAlert;
 
     public $slug;
+
     public $quantity = 1;
+
     public $product;
+
     public $relatedProducts;
+
     public $cartItems = [];
 
     protected $rules = [
@@ -77,7 +81,7 @@ class ProductComponent extends Component
             'toast' => true,
         ]);
 
-        if (!$productId) {
+        if (! $productId) {
             $this->quantity = 1;
         }
     }
@@ -134,7 +138,7 @@ class ProductComponent extends Component
             ->get();
 
         return view('livewire.product-component', [
-            'inCart' => $inCart
+            'inCart' => $inCart,
         ]);
     }
 }

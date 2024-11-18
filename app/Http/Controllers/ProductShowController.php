@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 
-
 class ProductShowController extends Controller
 {
     /**
@@ -20,7 +19,7 @@ class ProductShowController extends Controller
             ->get();
 
         // Return a view with the product
-        return view('product.index', compact('product','relatedProducts'));
+        return view('product.index', compact('product', 'relatedProducts'));
 
     }
 }
