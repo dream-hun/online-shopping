@@ -79,7 +79,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public static function boot(): void
+    /*public static function boot(): void
     {
         parent::boot();
 
@@ -97,5 +97,5 @@ class Order extends Model
             Notification::route('mail', $this->email)
                 ->notify(new OrderStatusNotification($this->status));
         }
-    }
+    }*/
 }
