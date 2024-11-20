@@ -27,11 +27,10 @@ class Order extends Model
         'deleted_at' => 'datetime',
     ];
 
-    protected array $dates = [
+    protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
-
     ];
 
     public const PAYMENT_TYPE_SELECT = [
@@ -68,9 +67,9 @@ class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8): void
     {
-        $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix . str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
-        $this->update();
+        $this->save();
     }
 
     public function orderItems(): HasMany
@@ -78,14 +77,19 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public static function booting(): void
+    public static function boot(): void
     {
+        parent::boot();
+
         self::updated(function (Order $order) {
             // Retrieve enum cases as an array of values
-            $orderStatusValues = array_map(fn ($status) => $status->value, OrderStatus::cases());
+            $orderStatusValues = array_map(fn($status) => $status->value, OrderStatus::cases());
 
             if ($order->isDirty('status') && in_array($order->status->value, $orderStatusValues)) {
-                Notification::route('mail', $order->email)->notify(new OrderStatusNotification($order->status));
+                if (!empty($order->email) && filter_var($order->email, FILTER_VALIDATE_EMAIL)) {
+                    Notification::route('mail', $order->email)
+                        ->notify(new OrderStatusNotification($order->status));
+                }
             }
         });
     }
