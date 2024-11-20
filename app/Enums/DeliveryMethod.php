@@ -4,10 +4,10 @@ namespace App\Enums;
 
 enum DeliveryMethod: string
 {
-    case DELIVERY = 'delivery';
-    case PICKUP = 'pickup';
+    case DELIVERY = 'Delivery';
+    case PICKUP = 'Pickup';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::DELIVERY => 'Home Delivery',

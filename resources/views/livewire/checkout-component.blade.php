@@ -131,7 +131,7 @@
                                     for="delivery_{{ $shipping_method->value }}">
                                     <div class="block">
                                         <div class="w-full text-lg font-semibold">
-                                            {{ $shipping_method->label() }}
+                                            {{ $shipping_method->getLabel() }}
                                         </div>
                                     </div>
                                     <svg aria-hidden="true" class="w-5 h-5 ms-3 rtl:rotate-180" fill="none"
