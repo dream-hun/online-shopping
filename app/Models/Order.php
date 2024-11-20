@@ -82,15 +82,18 @@ class Order extends Model
         parent::boot();
 
         self::updated(function (Order $order) {
-            // Retrieve enum cases as an array of values
-            $orderStatusValues = array_map(fn($status) => $status->value, OrderStatus::cases());
-
-            if ($order->isDirty('status') && in_array($order->status->value, $orderStatusValues)) {
-                if (!empty($order->email) && filter_var($order->email, FILTER_VALIDATE_EMAIL)) {
-                    Notification::route('mail', $order->email)
-                        ->notify(new OrderStatusNotification($order->status));
-                }
+            // Only notify if the status field was changed
+            if ($order->isDirty('status') && $order->status instanceof OrderStatus) {
+                $order->notifyOrderStatusChange();
             }
         });
+    }
+
+    public function notifyOrderStatusChange(): void
+    {
+        if (!empty($this->email) && filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            Notification::route('mail', $this->email)
+                ->notify(new OrderStatusNotification($this->status));
+        }
     }
 }
