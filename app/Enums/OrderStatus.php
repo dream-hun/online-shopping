@@ -1,27 +1,32 @@
 <?php
 
-namespace App\Enums;
+namespace App\Notifications;
 
-enum OrderStatus: string
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class OrderStatusNotification extends Notification
 {
-    case PENDING = 'Pending';
-    case COMPLETED = 'Completed';
-    case DELIVERED = 'Delivered';
-    case CANCELLED = 'Cancelled';
-    case PROCESSING = 'Processing';
-    case SHIPPED = 'Shipped';
-    case PAID = 'Paid';
+    use Queueable;
 
-    public function getLabel(): string
+    private string $status;
+
+    public function __construct(\App\Enums\OrderStatus $status)
     {
-        return match ($this) {
-            self::PENDING => 'Pending',
-            self::COMPLETED => 'Completed',
-            self::CANCELLED => 'Cancelled',
-            self::DELIVERED => 'Delivered',
-            self::PROCESSING => 'Processing',
-            self::SHIPPED => 'Shipped',
-            self::PAID => 'Paid',
-        };
+        // Access the value of the enum
+        $this->status = $status->value;
+    }
+
+    public function via($notifiable)
+    {
+        return ['mail'];
+    }
+
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->line('Your order status has been updated to: '.$this->status)
+            ->line('Thank you for shopping with us!');
     }
 }
