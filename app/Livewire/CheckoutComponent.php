@@ -16,10 +16,10 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+use Mail;
 
 class CheckoutComponent extends Component
 {
@@ -36,21 +36,30 @@ class CheckoutComponent extends Component
 
     public function placeOrder()
     {
-        $this->form->validate();
-
-        if (Cart::isEmpty()) {
-            $this->alert('error', 'Your cart is empty!', [
-                'position' => 'top-end',
-                'timer' => 3000,
-                'toast' => true,
-            ]);
-
-            return $this->redirect('checkout');
-        }
-
         try {
-            // Create order
+            $this->form->validate();
+
+            if (Cart::isEmpty()) {
+                $this->alert('error', 'Your cart is empty!', [
+                    'position' => 'top-end',
+                    'timer' => 3000,
+                    'toast' => true,
+                ]);
+
+                return $this->redirect('checkout');
+            }
+
             DB::beginTransaction();
+
+            // Validate cart items exist in products
+            foreach (Cart::getContent() as $cartItem) {
+                $product = Product::find($cartItem->id);
+                if (! $product) {
+                    throw new Exception('One or more products in your cart are no longer available.');
+                }
+            }
+
+            // Create order
             $order = Order::create([
                 'client_phone' => $this->form->client_phone,
                 'email' => $this->form->email,
@@ -63,34 +72,36 @@ class CheckoutComponent extends Component
                 'total_amount' => Cart::getTotal(),
             ]);
 
+            if (! $order) {
+                throw new Exception('Failed to create order.');
+            }
+
             // Create order items
             foreach (Cart::getContent() as $cartItem) {
                 $product = Product::find($cartItem->id);
                 if ($product) {
-                    $order->orderItems()->create([
+                    $orderItem = $order->orderItems()->create([
                         'product_id' => $product->id,
                         'price' => $cartItem->price,
                         'quantity' => $cartItem->quantity,
                         'subtotal' => $cartItem->price * $cartItem->quantity,
                     ]);
+
+                    if (! $orderItem) {
+                        throw new Exception('Failed to create order item.');
+                    }
                 }
             }
 
             $order->setOrderNo('ORD');
 
-            // Send notifications
-            try {
-                Mail::to($order->email)->send(new OrderPlaced($order));
-                $users = User::whereHas('roles', function ($query) {
-                    return $query->where('title', 'Admin');
-                });
-                Notification::send($users, new NewOrderNotification($order));
-            } catch (Exception $e) {
-                // Log notification error but don't roll back transaction
-                report($e);
-            }
-
             DB::commit();
+
+            Mail::to($order->email)->send(new OrderPlaced($order));
+            $users = User::whereHas('roles', function ($q) {
+                return $q->where('title', 'Admin');
+            })->get();
+            Notification::send($users, new NewOrderNotification($order));
 
             // Clear cart and reset form
             Cart::clear();
@@ -104,6 +115,7 @@ class CheckoutComponent extends Component
             ]);
 
             return redirect()->route('order-success', ['id' => Garden::encryptId($order->id)]);
+
         } catch (Exception $e) {
             DB::rollBack();
             report($e);  // Log the error
@@ -118,6 +130,8 @@ class CheckoutComponent extends Component
                 'timer' => 3000,
                 'toast' => true,
             ]);
+
+            return null;
         }
     }
 
@@ -134,7 +148,7 @@ class CheckoutComponent extends Component
             }
 
             return $item;
-        });
+        })->filter(); // Remove null values
 
         $deliveryMethods = DeliveryMethod::cases();
 

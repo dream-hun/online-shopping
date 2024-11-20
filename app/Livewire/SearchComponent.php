@@ -14,7 +14,7 @@ class SearchComponent extends Component
 {
     use WithPagination;
 
-    #[Url(as: 'search',history: true)]
+    #[Url(as: 'search', history: true)]
     public $search = '';
 
     public function updatedSearch(): void
