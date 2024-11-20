@@ -27,11 +27,13 @@ class Order extends Model
         'deleted_at' => 'datetime',
     ];
 
-    protected $dates = [
+    protected array $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+
 
     public const PAYMENT_TYPE_SELECT = [
         'cash_on_delivery' => 'Cash On Delivery',
