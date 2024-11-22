@@ -7,6 +7,8 @@ use App\Http\Requests\MassDestroyOrderRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
+use App\Enums\DeliveryMethod;
+use App\Enums\OrderStatus;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,61 +16,71 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
-    public function index(Request $request)
-    {
-        abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+   public function index(Request $request)
+{
+    abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Order::query()->select(sprintf('%s.*', (new Order)->table));
-            $table = Datatables::of($query);
+    if ($request->ajax()) {
+        $query = Order::query()->select(sprintf('%s.*', (new Order)->table));
+        $table = Datatables::of($query);
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+        $table->addColumn('placeholder', '&nbsp;');
+        $table->addColumn('actions', '&nbsp;');
 
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'order_show';
-                $editGate      = 'order_edit';
-                $deleteGate    = 'order_delete';
-                $crudRoutePart = 'orders';
+        $table->editColumn('actions', function ($row) {
+            $viewGate      = 'order_show';
+            $editGate      = 'order_edit';
+            $deleteGate    = 'order_delete';
+            $crudRoutePart = 'orders';
 
-                return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
+            return view('partials.datatablesActions', compact(
+                'viewGate',
+                'editGate',
+                'deleteGate',
+                'crudRoutePart',
+                'row'
+            ));
+        });
 
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('order_no', function ($row) {
-                return $row->order_no ? $row->order_no : '';
-            });
-            $table->editColumn('client_name', function ($row) {
-                return $row->client_name ? $row->client_name : '';
-            });
-            $table->editColumn('shipping_address', function ($row) {
-                return $row->shipping_address ? $row->shipping_address : '';
-            });
-            $table->editColumn('payment_type', function ($row) {
+        $table->editColumn('id', function ($row) {
+            return $row->id ? $row->id : '';
+        });
+        $table->editColumn('order_no', function ($row) {
+            return $row->order_no ? $row->order_no : '';
+        });
+        $table->editColumn('client_name', function ($row) {
+            return $row->client_name ? $row->client_name : '';
+        });
+        $table->editColumn('shipping_address', function ($row) {
+            return $row->shipping_address ? $row->shipping_address : '';
+        });
+         $table->editColumn('payment_type', function ($row) {
                 return $row->payment_type ? Order::PAYMENT_TYPE_SELECT[$row->payment_type] : '';
             });
-            $table->editColumn('delivery_method', function ($row) {
-                return $row->delivery_method ? Order::DELIVERY_METHOD_SELECT[$row->delivery_method] : '';
-            });
-            $table->editColumn('status', function ($row) {
-                return $row->status ? Order::STATUS_SELECT[$row->status] : '';
-            });
+        $table->editColumn('delivery_method', function ($row) {
+            if (!$row->delivery_method) {
+                return '';
+            }
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $deliveryMethod = DeliveryMethod::tryFrom($row->delivery_method);
+            return $deliveryMethod ? $deliveryMethod->getLabel() : 'Unknown';
+        });
+        $table->editColumn('status', function ($row) {
+            if (!$row->delivery_method) {
+                return '';
+            }
+            $status = OrderStatus::tryFrom($row->status);
+            return $row->status ? Order::STATUS_SELECT[$row->status] : '';
+            return $status ? $status->getLabel() : 'Pending';
+        });
 
-            return $table->make(true);
-        }
+        $table->rawColumns(['actions', 'placeholder']);
 
-        return view('admin.orders.index');
+        return $table->make(true);
     }
+
+    return view('admin.orders.index');
+}
 
     public function create()
     {
