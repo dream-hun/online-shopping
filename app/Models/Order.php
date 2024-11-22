@@ -39,6 +39,7 @@ class Order extends Model
         'cash_on_delivery' => 'Cash On Delivery',
         'mobile_money' => 'Mobile Money',
         'bank_transfer' => 'Bank Transfer',
+        'Cash'=>'Cash',
     ];
 
     protected $fillable = [
