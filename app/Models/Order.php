@@ -33,13 +33,11 @@ class Order extends Model
         'deleted_at',
     ];
 
-
-
     public const PAYMENT_TYPE_SELECT = [
         'Cash On Delivery' => 'Cash On Delivery',
         'Mobile Money' => 'Mobile Money',
         'Bank Transfer' => 'Bank Transfer',
-        'Cash'=>'Cash',
+        'Cash' => 'Cash',
     ];
 
     protected $fillable = [
@@ -70,7 +68,7 @@ class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8): void
     {
-        $orderNo = $prefix . str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
         $this->save();
     }
