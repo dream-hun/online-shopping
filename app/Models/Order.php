@@ -34,7 +34,7 @@ class Order extends Model
     ];
 
     public const PAYMENT_TYPE_SELECT = [
-        'Cash On Delivery' => 'Cash On Delivery',
+        'Cash on Delivery' => 'Cash On Delivery',
         'Mobile Money' => 'Mobile Money',
         'Bank Transfer' => 'Bank Transfer',
         'Cash' => 'Cash',
