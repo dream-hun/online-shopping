@@ -10,6 +10,7 @@ enum OrderStatus: string
     case Delivered = 'Delivered';
     case Cancelled = 'Cancelled';
     case Completed = 'Completed';
+    case Paid = 'Paid';
 
     public function getLabel(): string
     {
@@ -20,6 +21,7 @@ enum OrderStatus: string
             self::Delivered => 'Delivered',
             self::Cancelled => 'Cancelled',
             self::Completed => 'Completed',
+            self::Paid => 'Paid',
         };
     }
 
