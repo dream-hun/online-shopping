@@ -26,9 +26,9 @@ class OrderController extends Controller
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate = 'order_show';
-                $editGate = 'order_edit';
-                $deleteGate = 'order_delete';
+                $viewGate      = 'order_show';
+                $editGate      = 'order_edit';
+                $deleteGate    = 'order_delete';
                 $crudRoutePart = 'orders';
 
                 return view('partials.datatablesActions', compact(
@@ -43,8 +43,23 @@ class OrderController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : '';
             });
+            $table->editColumn('order_no', function ($row) {
+                return $row->order_no ? $row->order_no : '';
+            });
             $table->editColumn('client_name', function ($row) {
                 return $row->client_name ? $row->client_name : '';
+            });
+            $table->editColumn('shipping_address', function ($row) {
+                return $row->shipping_address ? $row->shipping_address : '';
+            });
+            $table->editColumn('payment_type', function ($row) {
+                return $row->payment_type ? Order::PAYMENT_TYPE_SELECT[$row->payment_type] : '';
+            });
+            $table->editColumn('delivery_method', function ($row) {
+                return $row->delivery_method ? Order::DELIVERY_METHOD_SELECT[$row->delivery_method] : '';
+            });
+            $table->editColumn('status', function ($row) {
+                return $row->status ? Order::STATUS_SELECT[$row->status] : '';
             });
 
             $table->rawColumns(['actions', 'placeholder']);
