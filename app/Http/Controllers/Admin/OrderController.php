@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyOrderRequest;
 use App\Http\Requests\StoreOrderRequest;
@@ -63,14 +62,9 @@ class OrderController extends Controller
             });
 
             $table->editColumn('status', function ($row) {
-                if (! $row->delivery_method) {
-                    return '';
-                }
-                $status = OrderStatus::tryFrom($row->status);
-
-                return $row->status ? Order::STATUS_SELECT[$row->status] : '';
-
-                return $status ? $status->getLabel() : 'Pending';
+                return $row->status
+                    ? $row->status->getLabel() // Call the `getLabel` method on the enum
+                    : 'Pending';
             });
 
             $table->rawColumns(['actions', 'placeholder']);
