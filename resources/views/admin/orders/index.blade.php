@@ -43,6 +43,9 @@
                         {{ trans('cruds.order.fields.status') }}
                     </th>
                     <th>
+                        Placed At
+                    </th>
+                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -105,6 +108,7 @@
 { data: 'payment_type', name: 'payment_type' },
 { data: 'delivery_method', name: 'delivery_method' },
 { data: 'status', name: 'status' },
+{ data: 'create_at', name: 'created_at' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
@@ -116,7 +120,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 });
 
 </script>

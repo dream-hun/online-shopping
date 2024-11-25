@@ -24,6 +24,9 @@
                         <th>
                             {{ trans('cruds.order.fields.shipping_address') }}
                         </th>
+                        <th>
+                            Placed At
+                        </th>
 
 
 
@@ -50,6 +53,9 @@
                             </td>
                             <td>
                                 {{ $order->shipping_address ?? '' }}
+                            </td>
+                            <td>
+                                {{ $order->created_at ?? '' }}
                             </td>
 
                             <td>
