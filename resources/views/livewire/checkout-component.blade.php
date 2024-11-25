@@ -95,7 +95,7 @@
                         </li>
                         <li>
                             <input wire:model.blur="form.payment_type" class="hidden peer" id="payment_momo"
-                                   type="radio" value="Momo Pay" name="payment_type"/>
+                                   type="radio" value="Mobile Money" name="payment_type"/>
                             <label
                                 class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer   peer-checked:border-green-600 peer-checked:text-green-600 hover:text-gray-600 hover:bg-gray-100"
                                 for="payment_momo">
