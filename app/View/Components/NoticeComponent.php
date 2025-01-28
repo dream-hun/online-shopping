@@ -2,21 +2,19 @@
 
 namespace App\View\Components;
 
-use App\Models\Order;
+use App\Models\Event;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class RecentOrdersComponent extends Component
+class NoticeComponent extends Component
 {
-    public $orders;
-
     /**
      * Create a new component instance.
      */
-    public function __construct($limit = 10)
+    public function __construct()
     {
-        $this->orders = Order::latest()->limit($limit)->get();
+        //
     }
 
     /**
@@ -24,6 +22,7 @@ class RecentOrdersComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.recent-orders-component');
+        $notices = Event::select(['title', 'description'])->get();
+        return view('components.notice-component',['notices' => $notices]);
     }
 }
