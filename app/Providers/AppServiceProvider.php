@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Schema::defaultStringLength(191);
-        View::share('setting', Setting::first());
-        View::share('categories', Category::withCount('products')->latest()->get(['id', 'name', 'slug']));
+        // Schema::defaultStringLength(191);
+        // View::share('setting', Setting::first());
+        // View::share('categories', Category::withCount('products')->latest()->get(['id', 'name', 'slug']));
     }
 }
