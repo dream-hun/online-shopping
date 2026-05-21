@@ -38,7 +38,7 @@ return new class extends Migration
             });
 
             $indexName = "{$table}_uuid_unique";
-            $hasIndex = collect(DB::select("PRAGMA index_list(\"{$table}\")"))->contains('name', $indexName);
+            $hasIndex = collect(Schema::getIndexes($table))->contains('name', $indexName);
 
             if (! $hasIndex) {
                 Schema::table($table, function (Blueprint $blueprint) use ($indexName) {
