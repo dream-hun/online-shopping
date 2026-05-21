@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -41,12 +42,15 @@ class Order extends Model
     ];
 
     protected $fillable = [
+        'uuid',
         'order_no',
         'client_name',
         'client_phone',
         'email',
         'status',
         'shipping_address',
+        'house_number',
+        'customer_id',
         'notes',
         'payment_type',
         'delivery_method',
@@ -56,9 +60,23 @@ class Order extends Model
         'deleted_at',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function updated_by(): BelongsTo

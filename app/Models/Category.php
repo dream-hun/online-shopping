@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -37,6 +38,7 @@ class Category extends Model implements HasMedia
     ];
 
     protected $fillable = [
+        'uuid',
         'name',
         'slug',
         'status',
@@ -44,6 +46,15 @@ class Category extends Model implements HasMedia
         'updated_at',
         'deleted_at',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {
