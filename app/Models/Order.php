@@ -75,7 +75,7 @@ final class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8): void
     {
-        $orderNo = $prefix.mb_str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix.mb_str_pad((string) $this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
         $this->save();
     }
