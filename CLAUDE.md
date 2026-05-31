@@ -18,7 +18,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
-- phpunit/phpunit (PHPUNIT) - v12
+- pestphp/pest (PEST) - v4
 - alpinejs (ALPINEJS) - v3
 - eslint (ESLINT) - v10
 - tailwindcss (TAILWINDCSS) - v3
@@ -128,12 +128,12 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - If you have modified any PHP files, you must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
 
-=== phpunit/core rules ===
+=== pest/core rules ===
 
-# PHPUnit
+# Pest
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit {name}` to create a new test.
-- If you see a test using "Pest", convert it to PHPUnit.
+- This application uses Pest v4 for testing. All tests must be written as Pest functions using `it()` or `test()`. Use `php artisan make:test {name}` to create a feature test, and `php artisan make:test --unit {name}` for unit tests, then convert the generated class to Pest syntax.
+- If you see a test written as a PHPUnit class, convert it to Pest.
 - Every time a test has been updated, run that singular test.
 - When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
 - Tests should cover all happy paths, failure paths, and edge cases.
@@ -142,9 +142,9 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Running Tests
 
 - Run the minimal number of tests, using an appropriate filter, before finalizing.
-- To run all tests: `php artisan test --compact`.
-- To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
+- To run all tests: `./vendor/bin/pest`.
+- To run all tests in a file: `./vendor/bin/pest tests/Feature/ExampleTest.php`.
+- To filter on a particular test name: `./vendor/bin/pest --filter=testName` (recommended after making a change to a related file).
 
 === spatie/laravel-medialibrary rules ===
 
