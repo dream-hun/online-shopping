@@ -60,13 +60,13 @@
 
                             <td>
                                 @can('order_show')
-                                    <a class="btn btn-md btn-primary" href="{{ route('admin.orders.show', $order->id) }}">
+                                    <a class="btn btn-md btn-primary" href="{{ route('admin.orders.show', $order->uuid) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('order_edit')
-                                    <a class="btn btn-md btn-info" href="{{ route('admin.orders.edit', $order->id) }}">
+                                    <a class="btn btn-md btn-info" href="{{ route('admin.orders.edit', $order->uuid) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
