@@ -17,7 +17,7 @@
                 </div>
                 <div class="w-full px-4 md:w-1/2">
                     <div class="lg:pl-20">
-                        <div class="mb-8 [&>ul]:list-disc [&>:ul]:ml-4">
+                        <div class="mb-8 [&>ul]:list-disc [&>ul]:ml-4">
                             <h2 class="max-w-xl mb-6 text-md font-bold md:text-4xl">
                                 {{ $product->name }}
                             </h2>
