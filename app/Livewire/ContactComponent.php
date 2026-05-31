@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 final class ContactComponent extends Component
 {
     public function render()

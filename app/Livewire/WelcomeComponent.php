@@ -7,9 +7,11 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 final class WelcomeComponent extends Component
 {
     #[Title('Home - Garden of Eden Produce')]

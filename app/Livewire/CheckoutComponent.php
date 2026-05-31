@@ -19,9 +19,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Mail;
 
+#[Layout('components.layouts.app')]
 final class CheckoutComponent extends Component
 {
     public CheckoutForm $form;

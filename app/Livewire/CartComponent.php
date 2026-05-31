@@ -10,9 +10,11 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 #[Title('Shopping Cart - Garden of Eden Produce')]
 final class CartComponent extends Component
 {

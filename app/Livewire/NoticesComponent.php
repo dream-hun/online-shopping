@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Event;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 final class NoticesComponent extends Component
 {
     public function render()
