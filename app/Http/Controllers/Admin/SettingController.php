@@ -69,7 +69,7 @@ final class SettingController extends Controller
 
     public function massDestroy(MassDestroySettingRequest $request)
     {
-        $settings = Setting::find(request('ids'));
+        $settings = Setting::whereIn('uuid', request('ids'))->get();
 
         foreach ($settings as $setting) {
             $setting->delete();

@@ -93,7 +93,7 @@ final class ProductController extends Controller
 
     public function massDestroy(MassDestroyProductRequest $request)
     {
-        $products = Product::find(request('ids'));
+        $products = Product::whereIn('uuid', request('ids'))->get();
 
         foreach ($products as $product) {
             $product->delete();

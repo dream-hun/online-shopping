@@ -70,7 +70,7 @@
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-          return entry.id
+          return entry.uuid
       });
 
       if (ids.length === 0) {
@@ -102,6 +102,7 @@
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
+{ data: 'uuid', name: 'uuid', visible: false },
 { data: 'order_no', name: 'order_no' },
 { data: 'client_name', name: 'client_name' },
 { data: 'shipping_address', name: 'shipping_address' },

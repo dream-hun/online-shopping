@@ -53,7 +53,7 @@
                 </thead>
                 <tbody>
                     @foreach($settings as $key => $setting)
-                        <tr data-entry-id="{{ $setting->id }}">
+                        <tr data-entry-id="{{ $setting->uuid }}">
                             <td>
 
                             </td>
@@ -83,19 +83,19 @@
                             </td>
                             <td>
                                 @can('setting_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.settings.show', $setting->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.settings.show', $setting->uuid) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('setting_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.settings.edit', $setting->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.settings.edit', $setting->uuid) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('setting_delete')
-                                    <form action="{{ route('admin.settings.destroy', $setting->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.settings.destroy', $setting->uuid) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

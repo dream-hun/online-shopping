@@ -48,7 +48,7 @@
                 </thead>
                 <tbody>
                     @foreach($products as $key => $product)
-                        <tr data-entry-id="{{ $product->id }}">
+                        <tr data-entry-id="{{ $product->uuid }}">
                             <td>
 
                             </td>
@@ -74,13 +74,13 @@
                             <td>
 
                                 @can('product_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.products.edit', $product->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.products.edit', $product->uuid) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('product_delete')
-                                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.products.destroy', $product->uuid) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

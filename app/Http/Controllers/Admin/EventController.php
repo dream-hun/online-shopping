@@ -69,7 +69,7 @@ final class EventController extends Controller
 
     public function massDestroy(MassDestroyEventRequest $request)
     {
-        $events = Event::find(request('ids'));
+        $events = Event::whereIn('uuid', request('ids'))->get();
 
         foreach ($events as $event) {
             $event->delete();

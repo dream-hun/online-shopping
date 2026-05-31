@@ -45,6 +45,9 @@ final class OrderController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : '';
             });
+            $table->editColumn('uuid', function ($row) {
+                return $row->uuid ?? '';
+            });
             $table->editColumn('order_no', function ($row) {
                 return $row->order_no ? $row->order_no : '';
             });
@@ -69,7 +72,7 @@ final class OrderController extends Controller
                     : 'Pending';
             });
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $table->rawColumns(['actions', 'placeholder', 'uuid']);
 
             return $table->make(true);
         }
@@ -123,7 +126,7 @@ final class OrderController extends Controller
 
     public function massDestroy(MassDestroyOrderRequest $request)
     {
-        $orders = Order::find(request('ids'));
+        $orders = Order::whereIn('uuid', request('ids'))->get();
 
         foreach ($orders as $order) {
             $order->delete();

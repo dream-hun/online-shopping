@@ -80,7 +80,7 @@ final class UsersController extends Controller
 
     public function massDestroy(MassDestroyUserRequest $request)
     {
-        User::whereIn('id', request('ids'))->delete();
+        User::whereIn('uuid', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

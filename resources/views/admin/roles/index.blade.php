@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                     @foreach($roles as $key => $role)
-                        <tr data-entry-id="{{ $role->id }}">
+                        <tr data-entry-id="{{ $role->uuid }}">
                             <td>
 
                             </td>
@@ -55,19 +55,19 @@
                             </td>
                             <td>
                                 @can('role_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.roles.show', $role->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.roles.show', $role->uuid) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('role_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.roles.edit', $role->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.roles.edit', $role->uuid) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('role_delete')
-                                    <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.roles.destroy', $role->uuid) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

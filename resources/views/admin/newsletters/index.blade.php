@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     @foreach($newsletters as $key => $newsletter)
-                        <tr data-entry-id="{{ $newsletter->id }}">
+                        <tr data-entry-id="{{ $newsletter->uuid }}">
                             <td>
 
                             </td>
