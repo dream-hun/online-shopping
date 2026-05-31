@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\Event;
 use Livewire\Component;
 
-class NoticesComponent extends Component
+final class NoticesComponent extends Component
 {
     public function render()
     {

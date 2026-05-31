@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
 
-class Dashboard
+final class Dashboard
 {
     public static function toMoneyIncome()
     {

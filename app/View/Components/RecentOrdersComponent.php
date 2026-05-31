@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use App\Models\Order;
@@ -7,7 +9,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class RecentOrdersComponent extends Component
+final class RecentOrdersComponent extends Component
 {
     public $orders;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-class OrderController extends Controller
+final class OrderController extends Controller
 {
     public function index(Request $request)
     {
@@ -20,7 +22,7 @@ class OrderController extends Controller
 
         if ($request->ajax()) {
             $query = Order::query()->select(sprintf('%s.*', (new Order)->table));
-            $table = Datatables::of($query);
+            $table = DataTables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');

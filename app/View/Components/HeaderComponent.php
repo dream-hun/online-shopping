@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class HeaderComponent extends Component
+final class HeaderComponent extends Component
 {
     /**
      * Create a new component instance.

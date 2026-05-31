@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use App\Models\Event;
@@ -7,7 +9,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class NoticeComponent extends Component
+final class NoticeComponent extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +25,7 @@ class NoticeComponent extends Component
     public function render(): View|Closure|string
     {
         $notices = Event::select(['title', 'description'])->get();
-        return view('components.notice-component',['notices' => $notices]);
+
+        return view('components.notice-component', ['notices' => $notices]);
     }
 }

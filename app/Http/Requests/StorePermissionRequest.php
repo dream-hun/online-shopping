@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePermissionRequest extends FormRequest
+final class StorePermissionRequest extends FormRequest
 {
     public function authorize()
     {

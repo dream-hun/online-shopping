@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Traits;
 
 use Exception;
@@ -37,7 +39,7 @@ trait MediaUploadingTrait
 
         $file = $request->file('file');
 
-        $name = uniqid().'_'.trim($file->getClientOriginalName());
+        $name = uniqid().'_'.mb_trim($file->getClientOriginalName());
 
         $file->move($path, $name);
 

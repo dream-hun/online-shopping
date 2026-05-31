@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\Product;
@@ -10,7 +12,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class SearchComponent extends Component
+final class SearchComponent extends Component
 {
     use WithPagination;
 

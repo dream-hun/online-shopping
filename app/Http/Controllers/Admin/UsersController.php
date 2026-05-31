@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +13,7 @@ use App\Models\User;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersController extends Controller
+final class UsersController extends Controller
 {
     public function index()
     {

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class CartCounterComponent extends Component
+final class CartCounterComponent extends Component
 {
     public $count = 0;
 

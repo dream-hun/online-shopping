@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use Livewire\Component;
 
-class ContactComponent extends Component
+final class ContactComponent extends Component
 {
     public function render()
     {

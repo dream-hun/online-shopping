@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyCategoryRequest extends FormRequest
+final class MassDestroyCategoryRequest extends FormRequest
 {
     public function authorize()
     {

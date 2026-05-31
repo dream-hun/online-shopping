@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Forms;
 
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class CheckoutForm extends Form
+final class CheckoutForm extends Form
 {
     #[Validate('required', message: 'Please fill out your full name.')]
     #[Validate('min:5', message: 'Please enter a meaningful name.')]

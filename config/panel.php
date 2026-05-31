@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'date_format' => 'm-d-Y',
     'time_format' => 'H:i:s',

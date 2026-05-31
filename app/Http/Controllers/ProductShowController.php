@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
 
-class ProductShowController extends Controller
+final class ProductShowController extends Controller
 {
     /**
      * Handle the incoming request.

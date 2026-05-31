@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Cknow\Money\Money;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class OrderItem extends Model
+final class OrderItem extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -33,20 +35,6 @@ class OrderItem extends Model
         'deleted_at',
     ];
 
-    protected static function booted(): void
-    {
-        static::creating(function (self $model): void {
-            if (empty($model->uuid)) {
-                $model->uuid = (string) Str::uuid();
-            }
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
-
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
@@ -65,5 +53,19 @@ class OrderItem extends Model
     public function formattedSubtotal(): Money
     {
         return Money::RWF($this->price * $this->quantity);
+    }
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

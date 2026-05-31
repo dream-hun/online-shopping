@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,7 +12,7 @@ use App\Models\Event;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventController extends Controller
+final class EventController extends Controller
 {
     public function index()
     {

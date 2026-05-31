@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use Illuminate\Contracts\View\Factory;
@@ -8,7 +10,7 @@ use Illuminate\Foundation\Application;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-class WelcomeComponent extends Component
+final class WelcomeComponent extends Component
 {
     #[Title('Home - Garden of Eden Produce')]
     public function render(): Application|Factory|View|\Illuminate\View\View

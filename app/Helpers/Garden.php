@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use Hashids\Hashids;
 
-class Garden
+final class Garden
 {
     /**
      * Format a phone number to US format.
@@ -16,7 +18,7 @@ class Garden
         }
 
         $phone = preg_replace('/[^0-9]/', '', $phone);
-        $length = strlen($phone);
+        $length = mb_strlen($phone);
 
         switch ($length) {
             case 7:
