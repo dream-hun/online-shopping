@@ -82,10 +82,10 @@
                 <div class="mt-auto">
                     <div class="flex items-center space-x-4 mb-4">
                         <label for="quantity" class="text-gray-700">Quantity:</label>
-                        <input type="number" id="quantity" min="1" value="1"
+                        <input type="number" id="quantity" min="1" wire:model.live="quantity"
                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                     </div>
-                    <button class="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700
+                    <button wire:click="addToCart" class="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700
                             transition duration-300 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
                              fill="currentColor">
@@ -106,31 +106,31 @@
             <div class="bg-white rounded-lg shadow-lg p-4">
                 <a href="{{route('product',$relatedProduct->slug)}}">
 
-                    @if($product->image)
+                    @if($relatedProduct->image)
 
                         <img src="{{$relatedProduct->getFirstMediaUrl('image')}}" alt="{{$relatedProduct->name}}"
                              class="w-full h-48 object-cover rounded-lg mb-4">
                     @else
-                        <img src="{{ asset('images/No-image.png') }}" alt="{{$product->name}}"
+                        <img src="{{ asset('images/No-image.png') }}" alt="{{$relatedProduct->name}}"
                              class="w-full h-48 object-cover rounded-lg mb-4">
 
                     @endif
 
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $relatedProduct->name }}</h3>
-                    <p class="text-gray-600 mb-4"> {{ Str::limit($product->description, 100) }}</p>
+                    <p class="text-gray-600 mb-4"> {{ Str::limit($relatedProduct->description, 100) }}</p>
                     <p class="text-lg font-bold text-gray-900">{{ $relatedProduct->formattedPrice() }}
                         / {{ $relatedProduct->measurement }}</p>
 
                 </a>
                 <!-- Action button -->
                 <button
-                    wire:click="{{ $added ? 'remove' : 'addToCart' }}"
-                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $added
+                    wire:click="{{ $this->isInCart($relatedProduct->id) ? 'removeFromCart('.$relatedProduct->id.')' : 'addToCart('.$relatedProduct->id.')' }}"
+                    class="w-full py-2 px-4 rounded-lg transition-colors duration-200 {{ $this->isInCart($relatedProduct->id)
                 ? 'bg-red-700 hover:bg-red-800'
                 : 'bg-green-700 hover:bg-green-800'
             }} text-white"
                 >
-                    {{ $added ? 'Remove from Basket' : 'Add to Cart' }}
+                    {{ $this->isInCart($relatedProduct->id) ? 'Remove from Basket' : 'Add to Cart' }}
                 </button>
             </div>
 
@@ -138,7 +138,6 @@
     </div>
 </div>
 <x-footer-component/>
-<x-livewire-alert::scripts/>
 </body>
 
 </html>

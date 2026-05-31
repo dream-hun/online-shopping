@@ -74,7 +74,6 @@
     </main>
 
 <x-footer-component/>
-<x-livewire-alert::scripts/>
 </body>
 
 </html>

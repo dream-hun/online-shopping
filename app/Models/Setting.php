@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Cknow\Money\Money;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Setting extends Model
+final class Setting extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -36,9 +38,19 @@ class Setting extends Model
         'deleted_at',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    public function formattedShippingFee(): Money
+    {
+        return Money::RWF($this->shipping_fee);
+    }
+
     protected static function booted(): void
     {
-        static::creating(function (self $model): void {
+        self::creating(function (self $model): void {
             if (empty($model->uuid)) {
                 $model->uuid = (string) Str::uuid();
             }
@@ -48,10 +60,5 @@ class Setting extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function formattedShippingFee(): Money
-    {
-        return Money::RWF($this->shipping_fee);
     }
 }

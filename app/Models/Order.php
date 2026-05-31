@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\DeliveryMethod;
@@ -14,9 +16,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
-class Order extends Model
+final class Order extends Model
 {
     use Notifiable, SoftDeletes;
+
+    public const PAYMENT_TYPE_SELECT = [
+        'Cash on Delivery' => 'Cash On Delivery',
+        'Mobile Money' => 'Mobile Money',
+        'Bank Transfer' => 'Bank Transfer',
+        'Cash' => 'Cash',
+    ];
 
     public $table = 'orders';
 
@@ -34,13 +43,6 @@ class Order extends Model
         'deleted_at',
     ];
 
-    public const PAYMENT_TYPE_SELECT = [
-        'Cash on Delivery' => 'Cash On Delivery',
-        'Mobile Money' => 'Mobile Money',
-        'Bank Transfer' => 'Bank Transfer',
-        'Cash' => 'Cash',
-    ];
-
     protected $fillable = [
         'uuid',
         'order_no',
@@ -52,6 +54,7 @@ class Order extends Model
         'house_number',
         'customer_id',
         'notes',
+        'total_amount',
         'payment_type',
         'delivery_method',
         'updated_by_id',
@@ -59,20 +62,6 @@ class Order extends Model
         'updated_at',
         'deleted_at',
     ];
-
-    protected static function booted(): void
-    {
-        static::creating(function (self $model): void {
-            if (empty($model->uuid)) {
-                $model->uuid = (string) Str::uuid();
-            }
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date): string
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
 
     public function customer(): BelongsTo
     {
@@ -86,7 +75,7 @@ class Order extends Model
 
     public function setOrderNo(string $prefix = 'ORD', $pad_string = '0', int $len = 8): void
     {
-        $orderNo = $prefix.str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
+        $orderNo = $prefix.mb_str_pad($this->id, $len, $pad_string, STR_PAD_LEFT);
         $this->order_no = $orderNo;
         $this->save();
     }
@@ -94,6 +83,25 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 
     /*public static function boot(): void

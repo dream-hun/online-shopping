@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\Product;
@@ -7,20 +9,16 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 
-class ProductComponent extends Component
+final class ProductComponent extends Component
 {
-    use LivewireAlert;
-
     public $slug;
 
     public $quantity = 1;
 
     public $product;
-
-    public $relatedProducts;
 
     public $cartItems = [];
 
@@ -33,11 +31,6 @@ class ProductComponent extends Component
         $this->slug = $slug;
         $this->product = Product::where('slug', $this->slug)->firstOrFail();
         $this->updateCartItems();
-    }
-
-    private function updateCartItems(): void
-    {
-        $this->cartItems = collect(Cart::getContent())->pluck('id')->toArray();
     }
 
     public function increaseQuantity(): void
@@ -75,11 +68,12 @@ class ProductComponent extends Component
         $this->dispatch('update-cart');
         $this->updateCartItems();
 
-        $this->alert('success', "{$productToAdd->name} has been added to cart successfully!", [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+        LivewireAlert::title("{$productToAdd->name} has been added to cart successfully!")
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
 
         if (! $productId) {
             $this->quantity = 1;
@@ -94,11 +88,12 @@ class ProductComponent extends Component
         $this->dispatch('update-cart');
         $this->updateCartItems();
 
-        $this->alert('error', "{$productToRemove->name} has been removed from cart successfully!", [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+        LivewireAlert::title("{$productToRemove->name} has been removed from cart successfully!")
+            ->error()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
     }
 
     public function isInCart($productId): bool
@@ -132,13 +127,19 @@ class ProductComponent extends Component
 
         $inCart = $this->isInCart($this->product->id);
 
-        $this->relatedProducts = Product::where('category_id', $this->product->category_id)
+        $relatedProducts = Product::where('category_id', $this->product->category_id)
             ->where('id', '!=', $this->product->id)
             ->limit(3)
             ->get();
 
         return view('livewire.product-component', [
             'inCart' => $inCart,
+            'relatedProducts' => $relatedProducts,
         ]);
+    }
+
+    private function updateCartItems(): void
+    {
+        $this->cartItems = collect(Cart::getContent())->pluck('id')->toArray();
     }
 }

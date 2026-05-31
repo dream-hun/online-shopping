@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Enums\DeliveryMethod;
-use App\Helpers\Garden;
 use App\Livewire\Forms\CheckoutForm;
 use App\Mail\OrderPlaced;
 use App\Models\Order;
@@ -15,17 +16,14 @@ use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 use Mail;
 
-class CheckoutComponent extends Component
+final class CheckoutComponent extends Component
 {
-    use LivewireAlert;
-
     public CheckoutForm $form;
 
     public function mount()
@@ -37,30 +35,29 @@ class CheckoutComponent extends Component
 
     public function placeOrder()
     {
+        $this->form->validate();
+
+        if (Cart::isEmpty()) {
+            $this->toastError('Your cart is empty!');
+
+            return $this->redirect('checkout');
+        }
+
+        $order = null;
+
         try {
-            $this->form->validate();
-
-            if (Cart::isEmpty()) {
-                $this->alert('error', 'Your cart is empty!', [
-                    'position' => 'top-end',
-                    'timer' => 3000,
-                    'toast' => true,
-                ]);
-
-                return $this->redirect('checkout');
-            }
-
             DB::beginTransaction();
 
-            // Validate cart items exist in products
-            foreach (Cart::getContent() as $cartItem) {
-                $product = Product::find($cartItem->id);
-                if (! $product) {
+            $cartContent = Cart::getContent();
+            $productIds = $cartContent->pluck('id')->toArray();
+            $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+            foreach ($cartContent as $cartItem) {
+                if (! $products->has($cartItem->id)) {
                     throw new Exception('One or more products in your cart are no longer available.');
                 }
             }
 
-            // Create order
             $order = Order::create([
                 'client_phone' => $this->form->client_phone,
                 'email' => $this->form->email,
@@ -73,67 +70,50 @@ class CheckoutComponent extends Component
                 'total_amount' => Cart::getTotal(),
             ]);
 
-            if (! $order) {
-                throw new Exception('Failed to create order.');
-            }
-
-            // Create order items
-            foreach (Cart::getContent() as $cartItem) {
-                $product = Product::find($cartItem->id);
-                if ($product) {
-                    $orderItem = $order->orderItems()->create([
-                        'product_id' => $product->id,
-                        'price' => $cartItem->price,
-                        'quantity' => $cartItem->quantity,
-                        'subtotal' => $cartItem->price * $cartItem->quantity,
-                    ]);
-
-                    if (! $orderItem) {
-                        throw new Exception('Failed to create order item.');
-                    }
-                }
+            foreach ($cartContent as $cartItem) {
+                $product = $products->get($cartItem->id);
+                $order->orderItems()->create([
+                    'product_id' => $product->id,
+                    'price' => $cartItem->price,
+                    'quantity' => $cartItem->quantity,
+                    'subtotal' => $cartItem->price * $cartItem->quantity,
+                ]);
             }
 
             $order->setOrderNo('ORD');
 
             DB::commit();
-
-            Mail::to($order->email)->send(new OrderPlaced($order));
-            $users = User::whereHas('roles', function ($q) {
-                return $q->where('title', 'Admin');
-            })->get();
-            Notification::send($users, new NewOrderNotification($order));
-
-            // Clear cart and reset form
-            Cart::clear();
-            $this->dispatch('update-cart');
-            $this->form->reset();
-
-            $this->alert('success', 'Your order has been placed successfully!', [
-                'position' => 'top-end',
-                'timer' => 3000,
-                'toast' => true,
-            ]);
-
-            return redirect()->route('order-success', ['id' => Garden::encryptId($order->id)]);
-
         } catch (Exception $e) {
             DB::rollBack();
-            report($e);  // Log the error
+            report($e);
 
             $message = 'An error occurred while placing your order. Please try again.';
             if (app()->environment('local')) {
                 $message .= ' Error: '.$e->getMessage();
             }
 
-            $this->alert('error', $message, [
-                'position' => 'top-end',
-                'timer' => 3000,
-                'toast' => true,
-            ]);
+            $this->toastError($message);
 
             return null;
         }
+
+        try {
+            Mail::to($order->email)->send(new OrderPlaced($order));
+            $users = User::whereHas('roles', function ($q) {
+                return $q->where('title', 'Admin');
+            })->get();
+            Notification::send($users, new NewOrderNotification($order));
+        } catch (Exception $e) {
+            report($e);
+        }
+
+        Cart::clear();
+        $this->dispatch('update-cart');
+        $this->form->reset();
+
+        $this->toastSuccess('Your order has been placed successfully!');
+
+        return redirect()->route('order-success', ['id' => $order->uuid]);
     }
 
     public function render(): View|Factory|Application
@@ -165,5 +145,15 @@ class CheckoutComponent extends Component
             'subtotal' => Cart::getSubTotal(),
             'total' => Cart::getTotal(),
         ]);
+    }
+
+    private function toastSuccess(string $message): void
+    {
+        LivewireAlert::title($message)->success()->toast()->position('top-end')->timer(3000)->show();
+    }
+
+    private function toastError(string $message): void
+    {
+        LivewireAlert::title($message)->error()->toast()->position('top-end')->timer(3000)->show();
     }
 }

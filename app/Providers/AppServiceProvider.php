@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Models\Category;
@@ -8,23 +10,20 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Schema::defaultStringLength(191);
-        // View::share('setting', Setting::first());
-        // View::share('categories', Category::withCount('products')->latest()->get(['id', 'name', 'slug']));
+        Schema::defaultStringLength(191);
+
+        if (! $this->app->runningInConsole()) {
+            View::share('setting', Setting::first());
+            View::share('categories', Category::withCount('products')->latest()->get(['id', 'name', 'slug']));
+        }
     }
 }

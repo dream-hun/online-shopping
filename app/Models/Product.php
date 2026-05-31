@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\ProductScope;
@@ -18,9 +20,15 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 #[ScopedBy([ProductScope::class])]
 
-class Product extends Model implements HasMedia
+final class Product extends Model implements HasMedia
 {
     use InteractsWithMedia, Sluggable, SoftDeletes;
+
+    public const STATUS_SELECT = [
+        'available' => 'Available',
+        'not-available' => 'Not Available',
+        'coming-soon' => 'Coming Soon',
+    ];
 
     public $table = 'products';
 
@@ -32,12 +40,6 @@ class Product extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
-    ];
-
-    public const STATUS_SELECT = [
-        'available' => 'Available',
-        'not-available' => 'Not Available',
-        'coming-soon' => 'Coming Soon',
     ];
 
     protected $fillable = [
@@ -54,18 +56,25 @@ class Product extends Model implements HasMedia
         'deleted_at',
     ];
 
-    protected static function booted(): void
+    public static function scopeSearch($query, ?string $search)
     {
-        static::creating(function (self $model): void {
-            if (empty($model->uuid)) {
-                $model->uuid = (string) Str::uuid();
-            }
+        return $query->when($search, function ($query) use ($search) {
+            $search = "%{$search}%";
+
+            return $query->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', $search)
+                    ->orWhere('description', 'LIKE', $search)
+                    ->orWhere('measurement', 'LIKE', $search)
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'LIKE', $search);
+                    });
+            });
         });
     }
 
-    protected function serializeDate(DateTimeInterface $date): string
+    public function getRouteKeyName(): string
     {
-        return $date->format('Y-m-d H:i:s');
+        return 'uuid';
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -108,19 +117,17 @@ class Product extends Model implements HasMedia
         ];
     }
 
-    public static function scopeSearch($query, ?string $search)
+    protected static function booted(): void
     {
-        return $query->when($search, function ($query) use ($search) {
-            $search = "%{$search}%";
-
-            return $query->where(function ($query) use ($search) {
-                $query->where('name', 'LIKE', $search)
-                    ->orWhere('description', 'LIKE', $search)
-                    ->orWhere('measurement', 'LIKE', $search)
-                    ->orWhereHas('category', function ($query) use ($search) {
-                        $query->where('name', 'LIKE', $search);
-                    });
-            });
+        self::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
         });
+    }
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

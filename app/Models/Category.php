@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\CategoryScope;
@@ -16,9 +18,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 #[ScopedBy([CategoryScope::class])]
-class Category extends Model implements HasMedia
+final class Category extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
+
+    public const STATUS_SELECT = [
+        'available' => 'Available',
+        'not-available' => 'Not Available',
+    ];
 
     public $table = 'categories';
 
@@ -32,11 +39,6 @@ class Category extends Model implements HasMedia
         'deleted_at',
     ];
 
-    public const STATUS_SELECT = [
-        'available' => 'Available',
-        'not-available' => 'Not Available',
-    ];
-
     protected $fillable = [
         'uuid',
         'name',
@@ -47,18 +49,9 @@ class Category extends Model implements HasMedia
         'deleted_at',
     ];
 
-    protected static function booted(): void
+    public function getRouteKeyName(): string
     {
-        static::creating(function (self $model): void {
-            if (empty($model->uuid)) {
-                $model->uuid = (string) Str::uuid();
-            }
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
+        return 'uuid';
     }
 
     public function registerMediaConversions(?Media $media = null): void
@@ -82,5 +75,19 @@ class Category extends Model implements HasMedia
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

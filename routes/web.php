@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\ProductController;
@@ -23,17 +26,17 @@ use App\Livewire\WelcomeComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', WelcomeComponent::class)->name('landing');
-Route::get('/about-us', AboutComponent::class)->name('about-us');
-Route::get('/contact-us', ContactComponent::class)->name('contact');
-Route::get('/shopping-cart', CartComponent::class)->name('cart');
-Route::get('/shop', ShoppingComponent::class)->name('shop');
-Route::get('/shop/products/{slug}', ProductComponent::class)->name('product');
-Route::get('/shop/checkout', CheckoutComponent::class)->name('checkout');
+Route::livewire('/', WelcomeComponent::class)->name('landing');
+Route::livewire('/about-us', AboutComponent::class)->name('about-us');
+Route::livewire('/contact-us', ContactComponent::class)->name('contact');
+Route::livewire('/shopping-cart', CartComponent::class)->name('cart');
+Route::livewire('/shop', ShoppingComponent::class)->name('shop');
+Route::livewire('/shop/products/{slug}', ProductComponent::class)->name('product');
+Route::livewire('/shop/checkout', CheckoutComponent::class)->name('checkout');
 Route::get('/order-confirmation/{id}', SuccessfulOrderController::class)->name('order-success');
-Route::get('/notice-board', NoticesComponent::class)->name('notices');
+Route::livewire('/notice-board', NoticesComponent::class)->name('notices');
 
-//Route to subscribe to newsletter
+// Route to subscribe to newsletter
 Route::post('/subscribe', NewsletterController::class)->name('subscribe');
 
 Route::get('/home', function () {
@@ -77,8 +80,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('events', EventController::class);
 
     // Newsletter
-    Route::delete('newsletters/destroy', [\App\Http\Controllers\Admin\NewsletterController::class, 'massDestroy'])->name('newsletters.massDestroy');
-    Route::resource('newsletters', \App\Http\Controllers\Admin\NewsletterController::class, ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
+    Route::delete('newsletters/destroy', [AdminNewsletterController::class, 'massDestroy'])->name('newsletters.massDestroy');
+    Route::resource('newsletters', AdminNewsletterController::class, ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
 
     // Shop
     Route::delete('settings/destroy', [SettingController::class, 'massDestroy'])->name('settings.massDestroy');
@@ -96,5 +99,3 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('profile/destroy', [ChangePasswordController::class, 'destroy'])->name('password.destroyProfile');
     }
 });
-
-Auth::routes();

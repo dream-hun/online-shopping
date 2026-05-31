@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\Order;
@@ -7,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderUpdateNotification extends Notification
+final class OrderUpdateNotification extends Notification
 {
     use Queueable;
 
@@ -41,8 +43,8 @@ class OrderUpdateNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Order #'.$this->order->order_no.' has been updated')
-            ->line($this->order->updated_by->name.' has updated order #'.$this->order->order_no.' status to '.$this->order->status->value)
-            ->action('Check it out here', url('/admin/orders/'.$this->order->id));
+            ->line(($this->order->updated_by?->name ?? 'System').' has updated order #'.$this->order->order_no.' status to '.$this->order->status->value)
+            ->action('Check it out here', route('admin.orders.show', $this->order->uuid));
     }
 
     /**

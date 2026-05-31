@@ -1,3 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+/* Blade content sources (not auto-detected by Vite) */
+@source "../../resources/views/**/*.blade.php";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+
+/* Preline UI — scan components and load CSS state variants */
+@source "../../node_modules/preline/dist/*.js";
+@import "../../node_modules/preline/variants.css";
+
+/* Font theme: replaces tailwind.config.js theme.extend.fontFamily */
+@theme {
+    --font-sans: "Inter var", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* OpenType feature/variation settings applied globally */
+@layer base {
+    body {
+        font-feature-settings: "cv11", "ss01";
+        font-variation-settings: "opsz" 32;
+    }
+}

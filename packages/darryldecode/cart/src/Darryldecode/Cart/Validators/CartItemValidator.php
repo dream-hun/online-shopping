@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Darryldecode\Cart\Validators;
+
+/**
+ * Created by PhpStorm.
+ * User: darryl
+ * Date: 1/16/2015
+ * Time: 11:00 AM
+ */
+final class CartItemValidator extends Validator {}

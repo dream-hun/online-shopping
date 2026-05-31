@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\Product;
@@ -7,13 +9,11 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 
-class FrontProductComponent extends Component
+final class FrontProductComponent extends Component
 {
-    use LivewireAlert;
-
     public $product;
 
     public $quantity = 1;
@@ -25,7 +25,6 @@ class FrontProductComponent extends Component
 
     public function addToCart(): void
     {
-
         $item = Cart::add([
             'id' => $this->product->id,
             'name' => $this->product->name,
@@ -37,22 +36,24 @@ class FrontProductComponent extends Component
 
         $this->dispatch('update-cart');
 
-        $this->alert('success', $this->product->name.' is added to cart successfully!', [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+        LivewireAlert::title($this->product->name.' is added to cart successfully!')
+            ->success()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
     }
 
     public function remove(): void
     {
         Cart::remove($this->product->id);
         $this->dispatch('update-cart');
-        $this->alert('error', $this->product->name.' is remove from cart successfully!', [
-            'position' => 'top-end',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
+        LivewireAlert::title($this->product->name.' is removed from cart successfully!')
+            ->error()
+            ->toast()
+            ->position('top-end')
+            ->timer(3000)
+            ->show();
     }
 
     public function render(): Application|Factory|View|\Illuminate\View\View

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\Order;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderCreatedNotification extends Notification
+final class OrderCreatedNotification extends Notification
 {
     public Order $order;
 
@@ -26,7 +28,7 @@ class OrderCreatedNotification extends Notification
             ->subject('New order')
             ->greeting('Hello there is a new order need a review')
             ->line('New order by '.$this->order->client_name.' which has order number '.$this->order->order_no)
-            ->action('Review the order here', url('/admin/orders/'.$this->order->id.'/edit'));
+            ->action('Review the order here', route('admin.orders.edit', $this->order->uuid));
     }
 
     public function toArray($notifiable): array

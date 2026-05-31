@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use DateTimeInterface;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Role extends Model
+final class Role extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -28,9 +30,19 @@ class Role extends Model
         'deleted_at',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
     protected static function booted(): void
     {
-        static::creating(function (self $model): void {
+        self::creating(function (self $model): void {
             if (empty($model->uuid)) {
                 $model->uuid = (string) Str::uuid();
             }
@@ -40,10 +52,5 @@ class Role extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
     }
 }

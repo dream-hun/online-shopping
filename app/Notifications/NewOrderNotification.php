@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\Order;
@@ -7,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewOrderNotification extends Notification
+final class NewOrderNotification extends Notification
 {
     use Queueable;
 
@@ -42,9 +44,8 @@ class NewOrderNotification extends Notification
             ->line('A new order has been placed with the following details.')
             ->line('Order ID: '.$this->order->order_no)
             ->line('Client: '.$this->order->client_name)
-            ->action('View order', url('/admin/orders/'.$this->order->id))
-            ->salutation('Best Regards')
-            ->salutation('The '.config('app.name').' Team');
+            ->action('View order', route('admin.orders.show', $this->order->uuid))
+            ->salutation('Best Regards, The '.config('app.name').' Team');
     }
 
     /**

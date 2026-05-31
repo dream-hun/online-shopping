@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -9,9 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Event extends Model
+final class Event extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public const STATUS_SELECT = [
+        'active' => 'Active',
+        'not-active' => 'Not Active',
+    ];
 
     public $table = 'events';
 
@@ -20,11 +27,6 @@ class Event extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-    ];
-
-    public const STATUS_SELECT = [
-        'active' => 'Active',
-        'not-active' => 'Not Active',
     ];
 
     protected $fillable = [
@@ -38,18 +40,9 @@ class Event extends Model
         'deleted_at',
     ];
 
-    protected static function booted(): void
+    public function getRouteKeyName(): string
     {
-        static::creating(function (self $model): void {
-            if (empty($model->uuid)) {
-                $model->uuid = (string) Str::uuid();
-            }
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('d-m-Y H:i:s');
+        return 'uuid';
     }
 
     public function getDateAttribute($value)
@@ -60,5 +53,19 @@ class Event extends Model
     public function setDateAttribute($value)
     {
         $this->attributes['date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $model): void {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('d-m-Y H:i:s');
     }
 }

@@ -59,7 +59,6 @@
     <x-header-component />
     {{ $slot }}
     <x-footer-component />
-    <x-livewire-alert::scripts />
 </body>
 
 </html>

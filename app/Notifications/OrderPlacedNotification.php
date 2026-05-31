@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
-use App\Helpers\Garden;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Log;
 
-class OrderPlacedNotification extends Notification
+final class OrderPlacedNotification extends Notification
 {
     use Queueable;
 
@@ -33,10 +34,10 @@ class OrderPlacedNotification extends Notification
      */
     public function toMail(): MailMessage
     {
-        if (! $this->order->client_name || ! $this->order->id) {
+        if (! $this->order->client_name || ! $this->order->uuid) {
             Log::error('Order properties are missing.', [
                 'client_name' => $this->order->client_name,
-                'id' => $this->order->id,
+                'uuid' => $this->order->uuid,
             ]);
         }
 
@@ -45,7 +46,7 @@ class OrderPlacedNotification extends Notification
             ->greeting('Dear '.$this->order->client_name)
             ->line('Your order has been placed.')
             ->line('Our team is working on it you will get email notification when it is ready.')
-            ->action('View your order', url('/order-confirmation/'.Garden::encryptId($this->order->id)))
+            ->action('View your order', url('/order-confirmation/'.$this->order->uuid))
             ->line('Thank you for shopping with us!');
     }
 

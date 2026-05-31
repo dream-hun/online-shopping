@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Darryldecode\Cart\Exceptions;
+
+use Exception;
+
+/**
+ * Created by PhpStorm.
+ * User: darryl
+ * Date: 1/15/2015
+ * Time: 9:24 PM
+ */
+final class InvalidConditionException extends Exception {}

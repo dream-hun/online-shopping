@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
-use App\Helpers\Garden;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -11,7 +12,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderPlaced extends Mailable
+final class OrderPlaced extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -41,8 +42,8 @@ class OrderPlaced extends Mailable
         return new Content(
             markdown: 'mail.orders.placed',
             with: [
-                'name' => $this->order->name,
-                'url' => url('/order-confirmation/'.Garden::encryptId($this->order->id)),
+                'name' => $this->order->client_name,
+                'url' => url('/order-confirmation/'.$this->order->uuid),
             ]
         );
     }

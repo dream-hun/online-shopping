@@ -82,7 +82,7 @@
                     <tr>
                         <td class="font-bold py-2">Client</td>
                         <td class="py-2">
-                            {{ $order->user === null ? $order->client_name : $order->user->name }}
+                            {{ $order->customer?->name ?? $order->client_name }}
                         </td>
                     </tr>
                     <tr>
@@ -128,26 +128,25 @@
                             {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal')) }}
                         </th>
                     </tr>
+                    @php $isDelivery = $order->delivery_method === \App\Enums\DeliveryMethod::DELIVERY; @endphp
                     <tr>
                         <th colspan="3" class="border border-gray-300 p-2 text-right">Shipping:</th>
                         <th class="border border-gray-300 p-2 text-left">
-                            @if ($order->delivery_method == 'delivery')
+                            @if ($isDelivery)
                                 {{ $setting->formattedShippingFee() }}
                             @else
                                 {{ 0 }}
                             @endif
-
                         </th>
                     </tr>
                     <tr>
                         <th colspan="3" class="border border-gray-300 p-2 text-right">Total:</th>
                         <th class="border border-gray-300 p-2 text-left">
-                            @if ($order->delivery_method == 'delivery')
+                            @if ($isDelivery)
                                 {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal') + $setting->shipping_fee) }}
                             @else
                                 {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal')) }}
                             @endif
-
                         </th>
                     </tr>
                     <tr>
@@ -156,7 +155,11 @@
                         </th>
                         <th class="border border-gray-300 p-2 text-left">
                             <strong class="text-green-600">
-                                {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal') + $setting->shipping_fee) }}
+                                @if ($isDelivery)
+                                    {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal') + $setting->shipping_fee) }}
+                                @else
+                                    {{ Cknow\Money\Money::RWF($order->orderItems()->sum('subtotal')) }}
+                                @endif
                             </strong>
                         </th>
                     </tr>

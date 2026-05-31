@@ -10,7 +10,7 @@
                             @forelse($categories as $category)
                                 <li class="mb-4"
                                     wire:key="{{ $category->id }}"
-                                    x-data="{ checked: false,count: {{ $category->products->count() }}, // Replace with actual count hover: false,animate: false}"
+                                    x-data="{ checked: false,count: {{ $category->products_count }}, hover: false,animate: false}"
                                     x-init="checked = $wire.selected_categories.includes('{{ $category->id }}')">
 
                                     <label for="{{ $category->slug }}" @mouseenter="hover = true"
@@ -125,7 +125,7 @@
                                         @click.away="open = false"
                                         class="flex items-center justify-between w-64 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     <span x-text="selected" class="text-gray-700"></span>
-                                    <svg :class="{'transform rotate-180': open}"
+                                    <svg :class="{'rotate-180': open}"
                                          class="w-5 h-5 text-gray-500 transition-transform duration-200"
                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,11 +136,11 @@
                                 <!-- Dropdown Menu -->
                                 <div x-show="open"
                                      x-transition:enter="transition ease-out duration-100"
-                                     x-transition:enter-start="transform opacity-0 scale-95"
-                                     x-transition:enter-end="transform opacity-100 scale-100"
+                                     x-transition:enter-start="opacity-0 scale-95"
+                                     x-transition:enter-end="opacity-100 scale-100"
                                      x-transition:leave="transition ease-in duration-75"
-                                     x-transition:leave-start="transform opacity-100 scale-100"
-                                     x-transition:leave-end="transform opacity-0 scale-95"
+                                     x-transition:leave-start="opacity-100 scale-100"
+                                     x-transition:leave-end="opacity-0 scale-95"
                                      class="absolute right-0 w-64 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-lg outline-none z-50">
                                     <div class="py-1">
                                         <a href="#" @click.prevent="selected = 'Latest Products'; open = false"
